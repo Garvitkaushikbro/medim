@@ -25,6 +25,11 @@ body {
   display: none !important;
 }
 
+a {
+  text-decoration: none;
+  color: var(--color-5);
+}
+
 svg {
   fill: none;
   width: 2rem;

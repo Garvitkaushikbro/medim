@@ -16,7 +16,7 @@ function YourPosts() {
     JSON.parse(localStorage.getItem("posts_1"))
   );
   const [isAddFormVisible, setAddFormVisible] = useState(false);
-  const [isSearchFormVisible, setSearchFormVisible] = useState(false);
+  // const [isSearchFormVisible, setSearchFormVisible] = useState(false);
   const [isFilterFormVisible, setFilterFormVisible] = useState(false);
 
   useEffect(
@@ -30,7 +30,10 @@ function YourPosts() {
     <div className={style.YourPosts}>
       <div className={style.yourPostsOptions}>
         <Add setAddFormVisible={setAddFormVisible}></Add>
-        <Search setSearchFormVisible={setSearchFormVisible}></Search>
+        <Search
+          yourPosts={yourPosts}
+          setDisplayPosts={setDisplayPosts}
+        ></Search>
         <Filter setFilterFormVisible={setFilterFormVisible}></Filter>
       </div>
       <div className={style.yourPostsItems}>
@@ -46,17 +49,18 @@ function YourPosts() {
           setAddFormVisible={setAddFormVisible}
         ></AddForm>
       )}
-      {isSearchFormVisible && (
+      {/* {isSearchFormVisible && (
         <SearchForm
           // add set posts
           setDisplayPosts={setDisplayPosts}
           setSearchFormVisible={setSearchFormVisible}
         ></SearchForm>
-      )}
+      )} */}
       {isFilterFormVisible && (
         <FilterForm
           setDisplayPosts={setDisplayPosts}
           setFilterFormVisible={setFilterFormVisible}
+          yourPosts={yourPosts}
         ></FilterForm>
       )}
     </div>
@@ -94,10 +98,24 @@ function Add({ setAddFormVisible }) {
   );
 }
 
-function Search({ setSearchFormVisible }) {
-  const handleClick = () => setSearchFormVisible(true);
+function Search({ setDisplayPosts, yourPosts }) {
+  const [keyword, setKeyword] = useState("");
+  const handleClick = (e) => {
+    setKeyword(e.target.value);
+    if (keyword === "") setDisplayPosts(yourPosts);
+    else {
+      setDisplayPosts((c) =>
+        yourPosts.filter(
+          (elm) =>
+            elm.title.toLowerCase().includes(keyword.toLowerCase()) ||
+            elm.topic.toLowerCase().includes(keyword.toLowerCase()) ||
+            elm.author.toLowerCase().includes(keyword.toLowerCase())
+        )
+      );
+    }
+  };
   return (
-    <div className={style.ops} onClick={handleClick}>
+    <div className={style.Search} onClick={handleClick}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -111,7 +129,7 @@ function Search({ setSearchFormVisible }) {
           d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
         />
       </svg>
-      <p>Search</p>
+      <input type="text" value={keyword} onChange={handleClick}></input>
     </div>
   );
 }

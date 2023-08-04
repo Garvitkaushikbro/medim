@@ -1,18 +1,20 @@
 import { useState } from "react";
 import EditForm from "../pages/EditForm";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import style from "./Posts.module.css";
 
 function Post({ post, setYourPosts }) {
   const [isEditFormVisible, setEditFormVisible] = useState(false);
+  const navigate = useNavigate();
 
   let { title, topic, image, text, publishTime, author, authorId, id } = post;
-  authorId = 4;
+  authorId = 1;
   publishTime = new Date(publishTime);
   publishTime = new Intl.DateTimeFormat("en-IN").format(publishTime);
   text = text.slice(0, 100);
-  text += "......... Click Post To Continue Reading";
+  text += "......... ";
 
   function handlePostDelete() {
     // synchronization with server required
@@ -30,6 +32,10 @@ function Post({ post, setYourPosts }) {
     setEditFormVisible(true);
   }
 
+  function handleClick() {
+    navigate(`/post/${id}`);
+  }
+
   return (
     <div className={style.Post}>
       <div className={style.postContent}>
@@ -38,7 +44,15 @@ function Post({ post, setYourPosts }) {
         </div>
         <div className={style.postWrite}>
           <div className={style.postTitle}>{title}</div>
-          <div className={style.postText}>{text}</div>
+          <div className={style.postText}>
+            {text}
+            <span
+              style={{ cursor: "pointer", fontWeight: "bold" }}
+              onClick={handleClick}
+            >
+              Click to Continue Reading
+            </span>
+          </div>
           <div className={style.postPublishTime}>{publishTime}</div>
           <div className={style.postAuthor}>
             <Link to={`/checkout/${authorId}`}>Author | {author}</Link>

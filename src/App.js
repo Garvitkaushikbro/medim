@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import User from "./pages/User";
 import CheckoutProfile from "./pages/CheckoutProfile";
+import FullPost from "./pages/FullPost";
 
 import { useAuth } from "./contexts/AuthContext";
 
@@ -28,6 +29,15 @@ function App() {
           element={
             <Protected userCredentials={userCredentials}>
               <CheckoutProfile></CheckoutProfile>
+            </Protected>
+          }
+        ></Route>
+
+        <Route
+          path="/post/:id"
+          element={
+            <Protected userCredentials={userCredentials}>
+              <FullPost></FullPost>
             </Protected>
           }
         ></Route>

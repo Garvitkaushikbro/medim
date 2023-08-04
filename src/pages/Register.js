@@ -1,5 +1,8 @@
 import { useState } from "react";
 import style from "./Register.module.css";
+import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -7,37 +10,41 @@ const Register = () => {
   const [image, setImage] = useState(null); // Use null as initial state for the image
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const { userCredentials, setUserCredentials } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       // Send the registration data to the server
       // Replace 'your-server-url' with the actual server URL
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("image", image); // Append the image to the formData
-      formData.append("password", password);
+      // const formData = new FormData();
+      // formData.append("name", name);
+      // formData.append("email", email);
+      // formData.append("image", image); // Append the image to the formData
+      // formData.append("password", password);
+      // console.log(formData);
 
-      const response = await fetch("your-server-url/register", {
-        method: "POST",
-        body: formData,
+      const response = await axios.post("http://127.0.0.1:3001/usercreate", {
+        email: email,
+        password: password,
+        name: name,
       });
+      const data = response.data;
+      setUserCredentials(data);
+      console.log("jo", data);
 
-      const data = await response.json();
-
+      if (response.status !== 200) throw Error("Server Error");
       // Check if the server response indicates successful registration
-      if (data.registered) {
-        // Navigate to the registered page
-        // Replace '/registered-page' with the actual URL of the registered page
-        window.location.href = "/registered-page";
+      if (response.status === 200) {
+        navigate("/user");
       } else {
         // Display the error message
         setError(data.message || "User with this email already exists.");
       }
     } catch (error) {
-      setError("An error occurred while processing your request.");
+      setError(error.message || "This email is already registered");
     }
   };
 

@@ -4,6 +4,8 @@ import SearchForm from "../pages/SearchForm";
 import FilterForm from "../pages/FilterForm";
 import Post from "../components/Post";
 
+import style from "./AllPosts.module.css";
+
 function AllPosts() {
   const [AllPosts, setAllPosts] = useState(() => {
     // make fetch request here for gettting users array of posts
@@ -21,13 +23,16 @@ function AllPosts() {
   );
 
   return (
-    <div className="AllPosts">
-      <div className="AllPostsOptions">
-        <Search setSearchFormVisible={setSearchFormVisible}></Search>
+    <div className={style.AllPosts}>
+      <div className={style.AllPostsOptions}>
+        <Search
+          AllPosts={AllPosts}
+          setDisplayAllPosts={setDisplayAllPosts}
+        ></Search>
         <Filter setFilterFormVisible={setFilterFormVisible}></Filter>
         {/* <Sort displayAllPosts={displayAllPosts}></Sort> */}
       </div>
-      <div className="AllPostsItems">
+      <div className={style.AllPostsItems}>
         {displayAllPosts.map((post, index) => {
           return <Post post={post} setYourPosts={null} key={index}></Post>;
         })}
@@ -37,7 +42,6 @@ function AllPosts() {
         <SearchForm
           // add set posts
           setDisplayPosts={setDisplayAllPosts}
-          setSearchFormVisible={setSearchFormVisible}
         ></SearchForm>
       )}
       {isFilterFormVisible && (
@@ -52,10 +56,24 @@ function AllPosts() {
 
 export default AllPosts;
 
-function Search({ setSearchFormVisible }) {
-  const handleClick = () => setSearchFormVisible(true);
+function Search({ setDisplayAllPosts, AllPosts }) {
+  const [keyword, setKeyword] = useState("");
+  const handleClick = (e) => {
+    setKeyword(e.target.value);
+    if (keyword === "") setDisplayAllPosts(AllPosts);
+    else {
+      setDisplayAllPosts((c) =>
+        AllPosts.filter(
+          (elm) =>
+            elm.title.toLowerCase().includes(keyword.toLowerCase()) ||
+            elm.topic.toLowerCase().includes(keyword.toLowerCase()) ||
+            elm.author.toLowerCase().includes(keyword.toLowerCase())
+        )
+      );
+    }
+  };
   return (
-    <div className="search" onClick={handleClick}>
+    <div className={style.Search} onClick={handleClick}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -69,7 +87,7 @@ function Search({ setSearchFormVisible }) {
           d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
         />
       </svg>
-      <p>Search</p>
+      <input type="text" value={keyword} onChange={handleClick}></input>
     </div>
   );
 }

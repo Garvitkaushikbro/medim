@@ -1,12 +1,14 @@
 import { useState } from "react";
+import style from "./FilterForm.module.css";
 
-function FilterForm({ setDisplayPosts, setFilterFormVisible }) {
+function FilterForm({ yourPosts, setDisplayPosts, setFilterFormVisible }) {
   const [date, setDate] = useState("");
 
   function handleSubmit(event) {
     event.preventDefault();
     setFilterFormVisible(false);
 
+    setDisplayPosts(yourPosts);
     setDisplayPosts((c) => {
       return c.filter((elm) => {
         let date1 = new Date(elm.publishTime);
@@ -23,18 +25,26 @@ function FilterForm({ setDisplayPosts, setFilterFormVisible }) {
 
   return (
     <div className="FilterForm">
-      <div className="FilterFormOverlay overlay">
-        <form id="form_filter" onSubmit={handleSubmit}>
-          <label for="form_filter_Date">Search Date</label>
+      <div className={style.overlay}>
+        <form className={style.form_filter} onSubmit={handleSubmit}>
+          <label for="form_filter_Date" className={style.form_post_label}>
+            Search Date
+          </label>
           <input
             type="date"
             name="form_filter_Date"
-            class="form_filter_Date"
+            className={style.form_post_entry}
             value={date}
             onChange={(e) => setDate(e.target.value)}
             required
           />
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Submit" className={style.submit} />
+          <span
+            className={style.cross}
+            onClick={() => setFilterFormVisible(false)}
+          >
+            &times;
+          </span>
         </form>
       </div>
     </div>
