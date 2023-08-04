@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import User from "./pages/User";
 
 function App() {
+  const fakeData = [
+    {
+      title: "Lorem",
+      topic: "ipsum",
+      image:
+        "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAIQAWAMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAAFBgADBAIBB//EADsQAAIBAwIDBQUGAgsAAAAAAAECAwAEERIhBTFBBhNRYYEiMnGR8BRSobHB0SPxBxVCQ0RTYnKCsuL/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAfEQEBAAICAwEBAQAAAAAAAAAAAQIRAyESMUETMwT/2gAMAwEAAhEDEQA/AM0YNa4VJqi3ANEreHJG4rVzRbbQlsbUVt7bltXNpBjFFII/Gk0keQ23iKv+zrjkKuUADautvCkvTBLbLjlWGa3wOVG2TV02qiW225UFouTIVPKsc3WjtzbYycUFu1052posDpgKlcXMmAa8poV20mSNxRuwwSKXOGv3qI6jZgDTNYIdqKcGbYLgUQjZQBisNuNhWxMCpaxdrzXSYPPNVhxXve4oNepQc1NRmTGyk1lNwK4a42oDy50nPs0v8TxvsKLTz896DX7hgacRkBXOMmpVV6cE1KqMl/DIhIiOpGlgCDimK1gYAbikGz4oZbBEhYq+rUzhfY2ySrH4cydj+FNfD76WW0XuZIBhcZ17edJUpiTWtXKZOimgVjdzfaALyRDGTj+GwOKZ14bE8alJnjJ3yN8/OlWku2f+L9xq6Go9DWpbOVMYuSy/7RXYVgh1LkikYc4NVEP4fjWPiHaFbWZ4Gs2kdTyDAZqix7T2c8yQm1ulkY/cBA/H9KafKNkyvzwaE3rcwASfhRyTjduVZYLaSRxzBGAKEXfFZmDutqUUDYMD+Y/agror8RZgT+1StXELt5CC8SEt9wn8iKlVGegaPhs9rbJF9tco6guq4ORvtn5/Qo9weKxdmSRJHdMp3aNtHg9djvjHM9POkQcTl7lEDMoClZGSTGsHx+QojZ9pIbeU93CY0IALRc9hgcz+tSUsfQfsGZtcahlOwBXGBimPhV06W2JVAj2zn+ySa+X23aJbiMa7uYam06HLE/Hai/DrqW4RJLXW0EbYKhvA75oXMtGziF5Da3Kh7obe6A/j4+NFOH38c0ojWVG23GetIF1It7i6d10E6SVOzYrrh94theCXvNWB44FLRzPs8X1hFHeNIqqxm2Ixn41XFwuJZpNbRKFGlAo5cjSlxLtjd3RWK0VI2OMtzPpWD+vLwyMxmClnyTpwPn9cqOxc8Ty0FtBPnvlYjYAD3atmaBYNRZdIBJJ5V82ue1EiOG7zXKw3KgD1oPxHtDeT/aA0j93JjK5wNvADagv0g12w7SQx6oOHRjURj7RtgcvdHWpSFeTmU5LbDlXlNPt3ZykIwAyh5tpz6VbNaQaHa3cv7OQF3wfP5HFeWxkBUeYx0OfOtZsfdZJ2OcAhhkdSBzx0pMt6rDGgRSGfDgcglb7Til5bQyJb3JVXB1AbZyMfOuZbG57wghGcEbDIIJo1w/sqx7ia/fR33uRQvvscbnG3pTPHdArW9mhi0lnK+BO1aWvJGiLl2GPHlmnLiP8AR/DJluGT4dRgxznIPqP2pT4hw6+4VdLbXVi0TSHALAEN5gjY0bOyxlS6lEYZsqvLUOtSa+llTU7sVJxg9MV6EbvltxOzTchpBIBPIedFI+z1xr131xphC7Kvvn9qCm6Dd/FhmdicDmRms87hhqjfboCMYp3i7JcN4laBojLBKDpLK5YHHiD5eGKEX/Z+Ph9y9pIqOygEOB7wIz1+NGxcfGbpPmJ3O2KlH7vh0SMVlijRtttQ/SpSOckCLd29kAZORgUbtUJjXDqjZK4fB5A9Pr1pfU4GvrnlRGOcNEQXUZXAy2y/XjQjIZt45WkjklkRz3gOpTjYZ+GRTbwgm44hCH92IfLH/qknhkci3Cs76o1ByMnbl4+W9O3Z1SsM0ze8QFz5nn+lDTjM0Lh3LefyrZJHbXcHc3sQliO+/MHxHgaFW7bjxzgVfcTYiO45UnQCW9lZWUUjW8onl7x170rjABIA+Q38TmhN+7MWJJ29K6sZysUwO+Jn6/6jWS8lLHJPwApsupOhXstPiSWAtnYMPTY/mKo7d2uZ7S6WTQGQxk/Dfx8zQ7gtz3HE4STgMwHodv2pg7ZxiXs9JLjLQOrj19k/gaX0WeWFj5dM6ofackt8cgVKunETKrAbb5OedSmw6DVYIpwNyK1WoLx6dic5OeXyrKsLE7c60wq2n28AAbHemMhjhIbB1c+XLn9b08WJ7mwhQbF/aP18qTeExghFXbW/ypteRTJpGyoAP5UmuHUFreTp6VomcMjAnHxoZbykEb79PKtkjjR5Y2+FDTZViJTvQT/evv8A8jWe4dOgLHGMnarp/YeQNy7x/wDuawy5bJPTrmhCoyEP0APRdqfUC8W4K0bf4iAqfIkY/OvnzgZ57+AGc04dj7gyWTxf5bZHkDv+eaVVi+YTqQCmCuDgr4GpTT2m4bb23E7pRkNJJ3iAAb53+WSalNzfpJdUmxO4fKnJ8BWyN9bAs2ANzt9YrAoO3Qee9aon9pcY9npTPKbN3ArZn7t+ipqot3UqsWxnfOxzili34ncxjvIZdAJwVAB/Ait6cdv1ZUMEThjgOTgD5Ur02xsvUGluRCQH235Hm3pROKYvF6bjwr59xS8vLW6EjSZaT7w2/GjnZriYmRje3FvGuMLHrCknxqJlttlx+M3a74mwSaTl77+vtGg5lR2IDgdBk71s41dxanYkMdbEAHxNBrAEXZnbJAOdhTt70nHHq5UT7kkezE7Z8Tj6+dH+yk3cX4ifA71Su3iNx+tA5OIjUUSM6hsQ3MelZ1v5hKJInKPGQdSL7m+xPh61SNyfTX21t4RLb3EuAkiNET58x+bV7SzxvtJccQ4fJw68jxcRSAiX3MEbHI5ciRtUojm5eOZZXKExGJYgnlVqE4XevKlDStqyPoIzsRVtq7CSLScDV09KlSln6Pg/pDbcRR3PDwJlDYGRtyNKFxYwG4K6cADOBXlSsHqtN3axWYjSBSA6ln1Ekk+tZJLudrYwF/4QIIXAr2pWnF9cX+z3jF3Dr2SHICo/t49tc8/5Uy3ka2sFjdxAd7NGRJncMCBkHx5dalStXEBcRAaxNwwBkjbu8nqvTPwqVKlAnp//2Q==",
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas cumque ipsum aspernatur, perspiciatis repellat aliquid dicta quasi rerum architecto corporis pariatur fugiat libero ipsam deserunt provident sunt porro a voluptate!",
+      publishTime: new Date(),
+      author: "garvit",
+      id: 1,
+    },
+    {
+      title: "lkdjfksl",
+      topic: "ipsum",
+      image:
+        "data:image/jpeg;base64,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",
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas cumque ipsum aspernatur, perspiciatis repellat aliquid dicta quasi rerum architecto corporis pariatur fugiat libero ipsam deserunt provident sunt porro a voluptate!",
+      publishTime: new Date(),
+      author: "garvit",
+      id: 2,
+    },
+  ];
+
+  localStorage.setItem("posts_1", JSON.stringify(fakeData));
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login></Login>}></Route>
+        <Route path="/register" element={<Register></Register>}></Route>
+        <Route path="/user/:id" element={<User></User>}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
