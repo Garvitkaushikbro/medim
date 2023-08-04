@@ -1,10 +1,13 @@
 import { useState } from "react";
 import EditForm from "../pages/EditForm";
+import { Link } from "react-router-dom";
 
 function Post({ post, setYourPosts }) {
   const [isEditFormVisible, setEditFormVisible] = useState(false);
 
-  const { title, topic, image, text, publishTime, author, id } = post;
+  let { title, topic, image, text, publishTime, author, authorId, id } = post;
+  authorId = 4;
+
   function handlePostDelete() {
     // synchronization with server required
     setYourPosts?.((c) => {
@@ -30,7 +33,9 @@ function Post({ post, setYourPosts }) {
         </div>
         <div className="postText">{text}</div>
         <div className="postPublishTime">{publishTime}</div>
-        <div className="postAuthor">{author}</div>
+        <div className="postAuthor">
+          <Link to={`/checkout/${authorId}`}>{author}</Link>
+        </div>
       </div>
       {setYourPosts && (
         <div className="postOptions">

@@ -1,64 +1,96 @@
-import styles from "./Login.module.css";
+import { useState } from "react";
 
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import Button from "../components/Button";
-
-// import { useAuth } from "../context/FakeAuthContext";
-
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Register = () => {
   const [name, setName] = useState("");
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [image, setImage] = useState(null); // Use null as initial state for the image
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  // const { login, isAuthenticated } = useAuth();
-
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (email && password) login(email, password);
-    navigate("/user/1");
-  }
 
-  // useEffect(
-  //   function () {
-  //     if (isAuthenticated) navigate("/app", { replace: true });
-  //   },
-  //   [isAuthenticated, navigate]
-  // );
+    try {
+      // Send the registration data to the server
+      // Replace 'your-server-url' with the actual server URL
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("image", image); // Append the image to the formData
+      formData.append("password", password);
+
+      const response = await fetch("your-server-url/register", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      // Check if the server response indicates successful registration
+      if (data.registered) {
+        // Navigate to the registered page
+        // Replace '/registered-page' with the actual URL of the registered page
+        window.location.href = "/registered-page";
+      } else {
+        // Display the error message
+        setError(data.message || "User with this email already exists.");
+      }
+    } catch (error) {
+      setError("An error occurred while processing your request.");
+    }
+  };
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
 
   return (
-    <main className={styles.login}>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <div className={styles.row}>
-          <label htmlFor="email">Email address</label>
+    <div>
+      <h2>Register</h2>
+      {error && <div style={{ color: "red" }}>{error}</div>}
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Name:</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Email:</label>
           <input
             type="email"
-            id="email"
-            onChange={(e) => setEmail(e.target.value)}
             value={email}
-            placeholder="Enter email..."
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
-
-        <div className={styles.row}>
-          <label htmlFor="password">Password</label>
+        <div>
+          <label>Image:</label>
+          <input
+            type="file" // Use type="file" for file upload
+            accept=".jpg,.jpeg,.png" // Specify accepted image file types
+            onChange={handleImageChange} // Handle image file change
+            required
+          />
+        </div>
+        <div>
+          <label>Password:</label>
           <input
             type="password"
-            id="password"
-            onChange={(e) => setPassword(e.target.value)}
             value={password}
-            placeholder="Enter Password"
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
-
         <div>
-          <Button type="primary">Login</Button>
+          <button type="submit">Register</button>
         </div>
       </form>
-    </main>
+    </div>
   );
-}
+};
 
-export default Login;
+export default Register;

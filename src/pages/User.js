@@ -3,12 +3,20 @@ import Button from "../components/Button";
 import { useState } from "react";
 import YourPosts from "../components/YourPosts";
 import AllPosts from "../components/AllPosts";
+import { useAuth } from "../contexts/AuthContext";
+import AuthorDetails from "../components/AuthorDetails";
 
 function User() {
-  const { id } = useParams();
+  const { setUserCredentials, userCredentials } = useAuth();
+
   const [selectedSection, setSelectedSection] = useState(true);
   return (
     <div className="User">
+      <AuthorDetails
+        name={userCredentials.name}
+        email={userCredentials.email}
+        image={userCredentials.image}
+      ></AuthorDetails>
       <div className="userOptions">
         <Button
           onClick={() => {
