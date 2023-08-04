@@ -1,4 +1,5 @@
 import { useState } from "react";
+import style from "./Register.module.css";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -45,12 +46,12 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      {error && <div style={{ color: "red" }}>{error}</div>}
+    <div className={style.Register}>
+      <h1 className={style.registerHeader}>Register</h1>
+      {error && <div className={style.error}>{error}</div>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
+        <div className={style.formEntry}>
+          <label>Name</label>
           <input
             type="text"
             value={name}
@@ -58,8 +59,8 @@ const Register = () => {
             required
           />
         </div>
-        <div>
-          <label>Email:</label>
+        <div className={style.formEntry}>
+          <label>Email</label>
           <input
             type="email"
             value={email}
@@ -67,8 +68,8 @@ const Register = () => {
             required
           />
         </div>
-        <div>
-          <label>Image:</label>
+        <div className={style.formEntry}>
+          <label>Image</label>
           <input
             type="file" // Use type="file" for file upload
             accept=".jpg,.jpeg,.png" // Specify accepted image file types
@@ -76,8 +77,8 @@ const Register = () => {
             required
           />
         </div>
-        <div>
-          <label>Password:</label>
+        <div className={style.formEntry}>
+          <label>Password</label>
           <input
             type="password"
             value={password}

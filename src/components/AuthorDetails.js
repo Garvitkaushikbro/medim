@@ -1,20 +1,24 @@
+import style from "./AuthorDetails.module.css";
+
 function AuthorDetails({ name, email, image }) {
   return (
-    <>
-      <div className="userDetails">
-        <div className="userDetails">
-          <h2>Name: {name}</h2>
-          <p>Email: {email}</p>
+    <div className={style.AuthorDetails}>
+      <div className={style.userDetails}>
+        <div className={style.imageContainer}>
           <img src={image} alt="User" />
+        </div>
+        <div className={style.nameContainer}>
+          <h2>{name}</h2>
+          <p>{email}</p>
         </div>
       </div>
 
-      <div className="userStats">
+      <div className={style.userStats}>
         <div className="userLikes">{`${40} likes`}</div>
         <div className="userComments">{`${4} comments`}</div>
         <div className="userViews">{`${100} views`}</div>
       </div>
-    </>
+    </div>
   );
 }
 

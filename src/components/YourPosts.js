@@ -4,6 +4,8 @@ import SearchForm from "../pages/SearchForm";
 import FilterForm from "../pages/FilterForm";
 import Post from "../components/Post";
 
+import style from "./YourPosts.module.css";
+
 function YourPosts() {
   const [yourPosts, setYourPosts] = useState(() => {
     // make fetch request here for gettting users array of posts
@@ -25,13 +27,13 @@ function YourPosts() {
   );
 
   return (
-    <div className="YourPosts">
-      <div className="yourPostsOptions">
+    <div className={style.YourPosts}>
+      <div className={style.yourPostsOptions}>
         <Add setAddFormVisible={setAddFormVisible}></Add>
         <Search setSearchFormVisible={setSearchFormVisible}></Search>
         <Filter setFilterFormVisible={setFilterFormVisible}></Filter>
       </div>
-      <div className="yourPostsItems">
+      <div className={style.yourPostsItems}>
         {displayPosts.map((post, index) => {
           return (
             <Post post={post} setYourPosts={setYourPosts} key={index}></Post>
@@ -70,7 +72,7 @@ const handleAdd = (setAddFormVisible) => {
 function Add({ setAddFormVisible }) {
   return (
     <div
-      className="add"
+      className={style.ops}
       alt="Add Post"
       onClick={() => handleAdd(setAddFormVisible)}
     >
@@ -95,7 +97,7 @@ function Add({ setAddFormVisible }) {
 function Search({ setSearchFormVisible }) {
   const handleClick = () => setSearchFormVisible(true);
   return (
-    <div className="search" onClick={handleClick}>
+    <div className={style.ops} onClick={handleClick}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -116,7 +118,7 @@ function Search({ setSearchFormVisible }) {
 
 function Sort() {
   return (
-    <div className="sort">
+    <div className={style.ops}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -137,7 +139,7 @@ function Sort() {
 
 function Filter({ setFilterFormVisible }) {
   return (
-    <div className="filter" onClick={() => setFilterFormVisible(true)}>
+    <div className={style.ops} onClick={() => setFilterFormVisible(true)}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

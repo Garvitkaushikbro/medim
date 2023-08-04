@@ -2,11 +2,17 @@ import { useState } from "react";
 import EditForm from "../pages/EditForm";
 import { Link } from "react-router-dom";
 
+import style from "./Posts.module.css";
+
 function Post({ post, setYourPosts }) {
   const [isEditFormVisible, setEditFormVisible] = useState(false);
 
   let { title, topic, image, text, publishTime, author, authorId, id } = post;
   authorId = 4;
+  publishTime = new Date(publishTime);
+  publishTime = new Intl.DateTimeFormat("en-IN").format(publishTime);
+  text = text.slice(0, 100);
+  text += "......... Click Post To Continue Reading";
 
   function handlePostDelete() {
     // synchronization with server required
@@ -25,21 +31,23 @@ function Post({ post, setYourPosts }) {
   }
 
   return (
-    <div className="Post">
-      <div className="postContent">
-        <div className="postTitle">{title}</div>
-        <div className="PostImgContainer">
+    <div className={style.Post}>
+      <div className={style.postContent}>
+        <div className={style.postImgContainer}>
           <img src={image}></img>
         </div>
-        <div className="postText">{text}</div>
-        <div className="postPublishTime">{publishTime}</div>
-        <div className="postAuthor">
-          <Link to={`/checkout/${authorId}`}>{author}</Link>
+        <div className={style.postWrite}>
+          <div className={style.postTitle}>{title}</div>
+          <div className={style.postText}>{text}</div>
+          <div className={style.postPublishTime}>{publishTime}</div>
+          <div className={style.postAuthor}>
+            <Link to={`/checkout/${authorId}`}>Author | {author}</Link>
+          </div>
         </div>
       </div>
       {setYourPosts && (
-        <div className="postOptions">
-          <div className="postDelete">
+        <div className={style.postOptions}>
+          <div className={style.postDelete}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -55,7 +63,7 @@ function Post({ post, setYourPosts }) {
               />
             </svg>
           </div>
-          <div className="postEdit">
+          <div className={style.postEdit}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
