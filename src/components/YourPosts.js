@@ -1,23 +1,40 @@
 import { useEffect, useState } from "react";
 import AddForm from "../pages/AddForm";
-import SearchForm from "../pages/SearchForm";
 import FilterForm from "../pages/FilterForm";
 import Post from "../components/Post";
+import { useAuth } from "../contexts/AuthContext";
+import axios from "axios";
 
 import style from "./YourPosts.module.css";
 
 function YourPosts() {
-  const [yourPosts, setYourPosts] = useState(() => {
-    // make fetch request here for gettting users array of posts
-    return JSON.parse(localStorage.getItem("posts_1"));
-  });
-  const [displayPosts, setDisplayPosts] = useState(() =>
-    // make fetch request here for gettting users array of posts
-    JSON.parse(localStorage.getItem("posts_1"))
-  );
+  const { userCredentials, setUserCredentials } = useAuth();
+  const [yourPosts, setYourPosts] = useState([]);
+  const [displayPosts, setDisplayPosts] = useState([]);
   const [isAddFormVisible, setAddFormVisible] = useState(false);
-  // const [isSearchFormVisible, setSearchFormVisible] = useState(false);
   const [isFilterFormVisible, setFilterFormVisible] = useState(false);
+
+  useEffect(() => {
+    function fetchPosts() {
+      // Make post request for saving data
+      axios
+        .get("http://127.0.0.1:3001/articlebylogeduser", {
+          headers: {
+            Authorization: `Bearer ${userCredentials.auth_token}`, // Include the token as a Bearer token in the header
+          },
+        })
+        .then((response) => {
+          // Handle the API response here
+          setYourPosts(response.data);
+          setAddFormVisible(false);
+        })
+        .catch((error) => {
+          // Handle any errors that occurred during the API request
+          console.error("Error:", error);
+        });
+    }
+    fetchPosts();
+  }, [userCredentials.auth_token, setYourPosts, setAddFormVisible]);
 
   useEffect(
     function () {
@@ -49,13 +66,6 @@ function YourPosts() {
           setAddFormVisible={setAddFormVisible}
         ></AddForm>
       )}
-      {/* {isSearchFormVisible && (
-        <SearchForm
-          // add set posts
-          setDisplayPosts={setDisplayPosts}
-          setSearchFormVisible={setSearchFormVisible}
-        ></SearchForm>
-      )} */}
       {isFilterFormVisible && (
         <FilterForm
           setDisplayPosts={setDisplayPosts}
@@ -102,20 +112,22 @@ function Search({ setDisplayPosts, yourPosts }) {
   const [keyword, setKeyword] = useState("");
   const handleClick = (e) => {
     setKeyword(e.target.value);
-    if (keyword === "") setDisplayPosts(yourPosts);
-    else {
+    console.log(keyword);
+    if (keyword.length <= 1) {
+      setDisplayPosts(yourPosts);
+    } else {
       setDisplayPosts((c) =>
-        yourPosts.filter(
-          (elm) =>
+        yourPosts.filter((elm) => {
+          return (
             elm.title.toLowerCase().includes(keyword.toLowerCase()) ||
-            elm.topic.toLowerCase().includes(keyword.toLowerCase()) ||
-            elm.author.toLowerCase().includes(keyword.toLowerCase())
-        )
+            elm.topics.toLowerCase().includes(keyword.toLowerCase())
+          );
+        })
       );
     }
   };
   return (
-    <div className={style.Search} onClick={handleClick}>
+    <div className={style.Search}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

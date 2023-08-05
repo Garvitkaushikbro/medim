@@ -2,30 +2,56 @@ import { useState } from "react";
 import EditForm from "../pages/EditForm";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
 
 import style from "./Posts.module.css";
 
 function Post({ post, setYourPosts }) {
   const [isEditFormVisible, setEditFormVisible] = useState(false);
   const navigate = useNavigate();
+  const { userCredentials, setUserCredentials } = useAuth();
 
-  let { title, topic, image, text, publishTime, author, authorId, id } = post;
-  authorId = 1;
-  publishTime = new Date(publishTime);
-  publishTime = new Intl.DateTimeFormat("en-IN").format(publishTime);
+  let {
+    title,
+    topic,
+    description: text,
+    author,
+    id,
+    author_id,
+    created_at,
+  } = post;
+  console.log(post);
+  // let authorId = 1;
+  let publishTime = "5/8/23";
+  created_at = new Date(created_at);
+  created_at = new Intl.DateTimeFormat("en-in").format(created_at);
+  publishTime = created_at;
   text = text.slice(0, 100);
   text += "......... ";
+  let image =
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyZ7RA3mlDh5vqCoNLmv5kUwDpKE8KN4ldm57DJepB8Q&s";
 
   function handlePostDelete() {
     // synchronization with server required
-    setYourPosts?.((c) => {
-      localStorage.setItem(
-        "posts_1",
-        JSON.stringify(c.filter((elm) => elm.id !== id))
-      );
-      console.log(c.filter((elm) => elm.id !== id));
-      return c.filter((elm) => elm.id !== id);
-    });
+    axios
+      .delete(`http://127.0.0.1:3001/delete`, {
+        body: { id },
+        headers: { Authorization: `Bearer ${userCredentials.auth_token}` },
+      })
+      .then((response) => {
+        console.log("delete", response);
+        setYourPosts?.((c) => {
+          localStorage.setItem(
+            "posts_1",
+            JSON.stringify(c.filter((elm) => elm.id !== id))
+          );
+          return c.filter((elm) => elm.id !== id);
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   function handlePostEdit() {
@@ -55,7 +81,7 @@ function Post({ post, setYourPosts }) {
           </div>
           <div className={style.postPublishTime}>{publishTime}</div>
           <div className={style.postAuthor}>
-            <Link to={`/checkout/${authorId}`}>Author | {author}</Link>
+            <Link to={`/checkout/${author_id}`}>Author | {author_id}</Link>
           </div>
         </div>
       </div>

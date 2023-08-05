@@ -28,12 +28,14 @@ const Login = () => {
         body: JSON.stringify({ email: email, password: password }),
       });
       // setUserCredentials(data);
-      const { auth_token } = await response.json();
-      console.log(auth_token);
+      const { auth_token, user } = await response.json();
       const decodedData = jwtDecode(auth_token);
-      console.log(decodedData);
-      // .Update it and also ask mridul about what to do with jwt
-      setUserCredentials({ ...decodedData, name: "Kaushik", email });
+      setUserCredentials({
+        ...user,
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6vFR1G248Z9vzUNxlmylLrgXUPX3pqzrZpKfYLvo64A&s",
+        auth_token,
+      });
 
       // Check if the server response indicates a successful login
       if (response.status === 200) {

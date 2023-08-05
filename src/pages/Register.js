@@ -32,8 +32,12 @@ const Register = () => {
         name: name,
       });
       const data = response.data;
-      setUserCredentials(data);
-      console.log("jo", data);
+
+      setUserCredentials({
+        ...data,
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6vFR1G248Z9vzUNxlmylLrgXUPX3pqzrZpKfYLvo64A&s",
+      });
 
       if (response.status !== 200) throw Error("Server Error");
       // Check if the server response indicates successful registration
@@ -81,7 +85,6 @@ const Register = () => {
             type="file" // Use type="file" for file upload
             accept=".jpg,.jpeg,.png" // Specify accepted image file types
             onChange={handleImageChange} // Handle image file change
-            required
           />
         </div>
         <div className={style.formEntry}>

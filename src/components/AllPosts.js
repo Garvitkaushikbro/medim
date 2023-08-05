@@ -1,19 +1,45 @@
 import { useEffect, useState } from "react";
 import AddForm from "../pages/AddForm";
-import SearchForm from "../pages/SearchForm";
 import FilterForm from "../pages/FilterForm";
 import Post from "../components/Post";
+import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
 
 import style from "./AllPosts.module.css";
 
 function AllPosts() {
-  const [AllPosts, setAllPosts] = useState(() => {
-    // make fetch request here for gettting users array of posts
-    return JSON.parse(localStorage.getItem("posts_1"));
-  });
+  const [AllPosts, setAllPosts] = useState([]);
   const [displayAllPosts, setDisplayAllPosts] = useState([]);
-  const [isSearchFormVisible, setSearchFormVisible] = useState(false);
   const [isFilterFormVisible, setFilterFormVisible] = useState(false);
+
+  const { userCredentials, setUserCredentials } = useAuth();
+
+  useEffect(() => {
+    async function fetchPosts() {
+      // Make post request for saving data
+      const { data: res1 } = await axios.get(
+        "http://127.0.0.1:3001/searchbyauthor",
+        {
+          headers: {
+            Authorization: `Bearer ${userCredentials.auth_token}`, // Include the token as a Bearer token in the header
+            authorname: `b`,
+          },
+        }
+      );
+
+      const { data: res2 } = await axios.get(
+        "http://127.0.0.1:3001/searchbyauthor",
+        {
+          headers: {
+            Authorization: `Bearer ${userCredentials.auth_token}`, // Include the token as a Bearer token in the header
+            authorname: `a`,
+          },
+        }
+      );
+      setAllPosts([...res1, ...res2]);
+    }
+    fetchPosts();
+  }, [userCredentials.auth_token, setAllPosts]);
 
   useEffect(
     function () {
@@ -30,7 +56,6 @@ function AllPosts() {
           setDisplayAllPosts={setDisplayAllPosts}
         ></Search>
         <Filter setFilterFormVisible={setFilterFormVisible}></Filter>
-        {/* <Sort displayAllPosts={displayAllPosts}></Sort> */}
       </div>
       <div className={style.AllPostsItems}>
         {displayAllPosts.map((post, index) => {
@@ -38,12 +63,6 @@ function AllPosts() {
         })}
       </div>
 
-      {isSearchFormVisible && (
-        <SearchForm
-          // add set posts
-          setDisplayPosts={setDisplayAllPosts}
-        ></SearchForm>
-      )}
       {isFilterFormVisible && (
         <FilterForm
           setDisplayPosts={setDisplayAllPosts}
@@ -60,14 +79,14 @@ function Search({ setDisplayAllPosts, AllPosts }) {
   const [keyword, setKeyword] = useState("");
   const handleClick = (e) => {
     setKeyword(e.target.value);
-    if (keyword === "") setDisplayAllPosts(AllPosts);
+    if (keyword.length <= 1) setDisplayAllPosts(AllPosts);
     else {
       setDisplayAllPosts((c) =>
         AllPosts.filter(
           (elm) =>
             elm.title.toLowerCase().includes(keyword.toLowerCase()) ||
-            elm.topic.toLowerCase().includes(keyword.toLowerCase()) ||
-            elm.author.toLowerCase().includes(keyword.toLowerCase())
+            elm.topics.toLowerCase().includes(keyword.toLowerCase())
+          // ||elm.author.toLowerCase().includes(keyword.toLowerCase())
         )
       );
     }
