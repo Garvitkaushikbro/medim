@@ -21,7 +21,6 @@ function Post({ post, setYourPosts }) {
     author_id,
     created_at,
   } = post;
-  console.log(post);
   // let authorId = 1;
   let publishTime = "5/8/23";
   created_at = new Date(created_at);

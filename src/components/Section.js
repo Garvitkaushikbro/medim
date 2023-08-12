@@ -10,14 +10,21 @@ import ListPosts from "./ListPosts";
 import style from "./Section.module.css";
 
 function Section({ url, sectionId }) {
-  const { userCredentials, setUserCredentials } = useAuth();
+  const { userCredentials } = useAuth();
   const [Posts, setPosts] = useState([]);
   const [displayPosts, setDisplayPosts] = useState([]);
   const [isFilterFormVisible, setFilterFormVisible] = useState(false);
 
-  const [isAddFormVisible, setAddFormVisible] = useState(() =>
-    sectionId === 0 ? false : null
+  const [isAddFormVisible, setAddFormVisible] = useState(false);
+  const [addOption, setAddOption] = useState(() =>
+    sectionId === 0 ? true : false
   );
+  console.log(`${sectionId} is rendering`);
+
+  useEffect(() => {
+    if (sectionId === 0) setAddOption(true);
+    else setAddOption(false);
+  });
 
   useEffect(() => {
     function fetchPosts() {
@@ -36,6 +43,7 @@ function Section({ url, sectionId }) {
           // Handle any errors that occurred during the API request
           console.error("Error:", error);
         });
+      console.log(`${sectionId} fething posts`);
     }
     fetchPosts();
   }, [userCredentials.auth_token]);
@@ -50,9 +58,7 @@ function Section({ url, sectionId }) {
   return (
     <div className={style.YourPosts}>
       <div className={style.yourPostsOptions}>
-        {isAddFormVisible !== null && (
-          <Add setAddFormVisible={setAddFormVisible}></Add>
-        )}
+        {addOption && <Add setAddFormVisible={setAddFormVisible}></Add>}
         <Search yourPosts={Posts} setDisplayPosts={setDisplayPosts}></Search>
         <Filter setFilterFormVisible={setFilterFormVisible}></Filter>
       </div>

@@ -55,15 +55,47 @@ function App() {
               path="allPosts"
               element={
                 <Section
-                  url={"http://127.0.0.1:3001/searchbyauthor"}
+                  url={"http://127.0.0.1:3001/articlebylogeduser"}
                   sectionId={1}
                 ></Section>
               }
             ></Route>
-            <Route path="recPosts" element={<RecPosts></RecPosts>}></Route>
-            <Route path="topPosts" element={<TopPosts></TopPosts>}></Route>
-            <Route path="morePosts" element={<MorePosts></MorePosts>}></Route>
-            <Route path="topicList" element={<TopicList></TopicList>}></Route>
+            <Route
+              path="recPosts"
+              element={
+                <Section
+                  url={"http://127.0.0.1:3001/articlebylogeduser"}
+                  sectionId={2}
+                ></Section>
+              }
+            ></Route>
+            <Route
+              path="topPosts"
+              element={
+                <Section
+                  url={"http://127.0.0.1:3001/articlebylogeduser"}
+                  sectionId={3}
+                ></Section>
+              }
+            ></Route>
+            <Route
+              path="morePosts"
+              element={
+                <Section
+                  url={"http://127.0.0.1:3001/articlebylogeduser"}
+                  sectionId={4}
+                ></Section>
+              }
+            ></Route>
+            <Route
+              path="topicList"
+              element={
+                <Section
+                  url={"http://127.0.0.1:3001/articlebylogeduser"}
+                  sectionId={5}
+                ></Section>
+              }
+            ></Route>
           </Route>
 
           <Route
