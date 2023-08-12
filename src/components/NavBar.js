@@ -11,7 +11,9 @@ function NavBar() {
 
   return (
     <div className={style.NavBar}>
-      <div className={style.header}>Nature</div>
+      <div className={style.header}>
+        <Link to="/">Nature</Link>
+      </div>
       <div className={style.options}>
         {userCredentials ? (
           <div className={style.logout} onClick={handleLogout}>

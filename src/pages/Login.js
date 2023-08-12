@@ -17,9 +17,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Send the login data to the server
-      // Replace 'your-server-url' with the actual server URL
-
       const response = await fetch("http://127.0.0.1:3001/userlogin", {
         method: "POST",
         headers: {

@@ -134,7 +134,7 @@ function Sort() {
 
 function Filter({ setFilterFormVisible }) {
   return (
-    <div className="filter" onClick={() => setFilterFormVisible(true)}>
+    <div className={style.ops} onClick={() => setFilterFormVisible(true)}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

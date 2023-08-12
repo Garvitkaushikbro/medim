@@ -42,7 +42,7 @@ function YourPosts() {
     },
     [yourPosts, setDisplayPosts]
   );
-
+ 
   return (
     <div className={style.YourPosts}>
       <div className={style.yourPostsOptions}>

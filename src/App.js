@@ -8,6 +8,12 @@ import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 
 import { useAuth } from "./contexts/AuthContext";
+import YourPosts from "./components/YourPosts";
+import AllPosts from "./components/AllPosts";
+import RecPosts from "./components/RecPosts";
+import TopPosts from "./components/TopPosts";
+import MorePosts from "./components/MorePosts";
+import TopicList from "./components/TopicList";
 
 function App() {
   const { userCredentials } = useAuth();
@@ -27,7 +33,15 @@ function App() {
                 <User />
               </Protected>
             }
-          />
+          >
+            <Route index element={<YourPosts></YourPosts>}></Route>
+            <Route path="yourPosts" element={<YourPosts></YourPosts>}></Route>
+            <Route path="allPosts" element={<AllPosts></AllPosts>}></Route>
+            <Route path="recPosts" element={<RecPosts></RecPosts>}></Route>
+            <Route path="topPosts" element={<TopPosts></TopPosts>}></Route>
+            <Route path="morePosts" element={<MorePosts></MorePosts>}></Route>
+            <Route path="topicList" element={<TopicList></TopicList>}></Route>
+          </Route>
 
           <Route
             path="/checkout/:id"

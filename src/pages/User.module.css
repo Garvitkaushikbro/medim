@@ -5,11 +5,12 @@
 }
 
 .userOptions {
+  margin-top: 1rem;
   display: flex;
   gap: 2rem;
 }
 
-.userOptions div {
+.userOptions .link {
   background-color: var(--color-1);
   padding: 2rem;
   cursor: pointer;
@@ -19,8 +20,12 @@
   color: var(--color-4);
 }
 
+.userOptions .link:global(.active) {
+  color: black;
+}
+
 .userSection {
-  background-color: #f7fada;
+  background-color: var(--color-1);
   margin-top: 1rem;
   border-radius: 1rem;
   padding: 2rem;
