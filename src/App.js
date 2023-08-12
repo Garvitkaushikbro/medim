@@ -5,6 +5,7 @@ import User from "./pages/User";
 import CheckoutProfile from "./pages/CheckoutProfile";
 import FullPost from "./pages/FullPost";
 import NavBar from "./components/NavBar";
+import Home from "./pages/Home";
 
 import { useAuth } from "./contexts/AuthContext";
 
@@ -16,6 +17,7 @@ function App() {
       <BrowserRouter>
         <NavBar></NavBar>
         <Routes>
+          <Route path="/" element={<Home></Home>}></Route>
           <Route path="/login" element={<Login></Login>}></Route>
           <Route path="/register" element={<Register></Register>}></Route>
           <Route
