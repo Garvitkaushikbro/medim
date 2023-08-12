@@ -121,7 +121,6 @@ function Post({ post, setYourPosts }) {
           </div>
         </div>
       )}
-
       {setYourPosts && isEditFormVisible && (
         <EditForm
           id={id}

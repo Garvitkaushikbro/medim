@@ -12,7 +12,6 @@
   margin: auto;
   padding: 1rem 2rem;
   gap: 1rem;
-  /* width: 40%; */
   justify-content: space-around;
   background-color: var(--color-2);
 
@@ -25,22 +24,4 @@
   color: var(--color-4);
   font-size: 2rem;
   align-items: center;
-}
-
-.yourPostsItems {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.Search {
-  align-self: center;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.Search input {
-  padding: 1rem;
-  font-size: 2rem;
 }
