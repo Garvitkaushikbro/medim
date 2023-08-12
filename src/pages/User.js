@@ -1,7 +1,5 @@
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import { useState } from "react";
-import YourPosts from "../components/YourPosts";
-import AllPosts from "../components/AllPosts";
 import { useAuth } from "../contexts/AuthContext";
 import AuthorDetails from "../components/AuthorDetails";
 
@@ -39,7 +37,6 @@ function User() {
       </div>
       <div className={style.userSection}>
         <Outlet />
-        {/* {selectedSection ? <YourPosts /> : <AllPosts />} */}
       </div>
     </div>
   );

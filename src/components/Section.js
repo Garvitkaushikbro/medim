@@ -5,30 +5,32 @@ import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import Search from "./Search";
 import Filter from "./Filter";
-
-import style from "./YourPosts.module.css";
 import ListPosts from "./ListPosts";
 
-function YourPosts() {
+import style from "./Section.module.css";
+
+function Section({ url, sectionId }) {
   const { userCredentials, setUserCredentials } = useAuth();
-  const [yourPosts, setYourPosts] = useState([]);
+  const [Posts, setPosts] = useState([]);
   const [displayPosts, setDisplayPosts] = useState([]);
-  const [isAddFormVisible, setAddFormVisible] = useState(false);
   const [isFilterFormVisible, setFilterFormVisible] = useState(false);
+
+  const [isAddFormVisible, setAddFormVisible] = useState(() =>
+    sectionId === 0 ? false : null
+  );
 
   useEffect(() => {
     function fetchPosts() {
       // Make post request for saving data
       axios
-        .get("http://127.0.0.1:3001/articlebylogeduser", {
+        .get(url, {
           headers: {
             Authorization: `Bearer ${userCredentials.auth_token}`, // Include the token as a Bearer token in the header
           },
         })
         .then((response) => {
           // Handle the API response here
-          setYourPosts(response.data);
-          setAddFormVisible(false);
+          setPosts(response.data);
         })
         .catch((error) => {
           // Handle any errors that occurred during the API request
@@ -40,35 +42,34 @@ function YourPosts() {
 
   useEffect(
     function () {
-      setDisplayPosts(yourPosts);
+      setDisplayPosts(Posts);
     },
-    [yourPosts, setDisplayPosts]
+    [Posts]
   );
 
   return (
     <div className={style.YourPosts}>
       <div className={style.yourPostsOptions}>
-        <Add setAddFormVisible={setAddFormVisible}></Add>
-        <Search
-          yourPosts={yourPosts}
-          setDisplayPosts={setDisplayPosts}
-        ></Search>
+        {isAddFormVisible !== null && (
+          <Add setAddFormVisible={setAddFormVisible}></Add>
+        )}
+        <Search yourPosts={Posts} setDisplayPosts={setDisplayPosts}></Search>
         <Filter setFilterFormVisible={setFilterFormVisible}></Filter>
       </div>
       <ListPosts
         displayPosts={displayPosts}
-        setYourPosts={setYourPosts}
+        setYourPosts={setPosts}
       ></ListPosts>
       {isFilterFormVisible && (
         <FilterForm
           setDisplayPosts={setDisplayPosts}
           setFilterFormVisible={setFilterFormVisible}
-          yourPosts={yourPosts}
+          yourPosts={Posts}
         ></FilterForm>
       )}
       {isAddFormVisible && (
         <AddForm
-          setYourPosts={setYourPosts}
+          setYourPosts={setPosts}
           setAddFormVisible={setAddFormVisible}
         ></AddForm>
       )}
@@ -76,7 +77,7 @@ function YourPosts() {
   );
 }
 
-export default YourPosts;
+export default Section;
 
 const handleAdd = (setAddFormVisible) => {
   setAddFormVisible(true);
@@ -106,24 +107,3 @@ function Add({ setAddFormVisible }) {
     </div>
   );
 }
-
-// function Sort() {
-//   return (
-//     <div className={style.ops}>
-//       <svg
-//         xmlns="http://www.w3.org/2000/svg"
-//         fill="none"
-//         viewBox="0 0 24 24"
-//         stroke-width="1.5"
-//         stroke="currentColor"
-//       >
-//         <path
-//           stroke-linecap="round"
-//           stroke-linejoin="round"
-//           d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-//         />
-//       </svg>
-//       <p>Sort</p>
-//     </div>
-//   );
-// }
