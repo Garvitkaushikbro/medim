@@ -5,94 +5,110 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [image, setImage] = useState(null); // Use null as initial state for the image
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [user, setUser] = useState({
+    username: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+  });
+  // const [error, setError] = useState({
+  //   username: "",
+  //   first_name: "",
+  //   last_name: "",
+  //   email: "",
+  //   password: "",
+  // });
   const navigate = useNavigate();
 
   const { userCredentials, setUserCredentials } = useAuth();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(user);
     try {
-      // Send the registration data to the server
-      // Replace 'your-server-url' with the actual server URL
-      // const formData = new FormData();
-      // formData.append("name", name);
-      // formData.append("email", email);
-      // formData.append("image", image); // Append the image to the formData
-      // formData.append("password", password);
-      // console.log(formData);
-
-      const response = await axios.post("http://127.0.0.1:3001/usercreate", {
-        email: email,
-        password: password,
-        name: name,
+      const mockURL = `http://127.0.0.1:3001/signup`;
+      const response = await fetch(mockURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+        body: JSON.stringify({ user }),
       });
-      const data = response.data;
-
-      setUserCredentials({
-        ...data,
-        image:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6vFR1G248Z9vzUNxlmylLrgXUPX3pqzrZpKfYLvo64A&s",
-      });
-
-      if (response.status !== 200) throw Error("Server Error");
-      // Check if the server response indicates successful registration
-      if (response.status === 200) {
-        navigate("/user");
-      } else {
-        // Display the error message
-        setError(data.message || "User with this email already exists.");
+      const { status, data } = await response.json();
+      console.log(data);
+      if (status.code === 200) {
+        navigate("/login");
       }
+      if (response.status === 422)
+        throw Error("Password must be atleast 6 characters");
     } catch (error) {
-      setError(error.message || "This email is already registered");
+      console.log(error.message);
     }
-  };
-
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
   };
 
   return (
     <div className={style.Register}>
       <h1 className={style.registerHeader}>Register</h1>
-      {error && <div className={style.error}>{error}</div>}
+      {/* {error && <div className={style.error}>{error}</div>} */}
       <form onSubmit={handleSubmit}>
         <div className={style.formEntry}>
-          <label>Name</label>
+          <label htmlFor="first_name">First Name</label>
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            name="first_name"
+            value={user.first_name}
+            onChange={(e) => setUser({ ...user, first_name: e.target.value })}
             required
           />
         </div>
         <div className={style.formEntry}>
-          <label>Email</label>
+          <label htmlFor="last_name">Last Name</label>
+          <input
+            type="text"
+            name="last_name"
+            value={user.last_name}
+            onChange={(e) => setUser({ ...user, last_name: e.target.value })}
+            required
+          />
+        </div>
+        <div className={style.formEntry}>
+          <label htmlFor="username">UserName</label>
+          <input
+            type="text"
+            name="username"
+            value={user.username}
+            onChange={(e) => setUser({ ...user, username: e.target.value })}
+            required
+          />
+        </div>
+        <div className={style.formEntry}>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            value={user.email}
+            onChange={(e) => setUser({ ...user, email: e.target.value })}
             required
           />
         </div>
         <div className={style.formEntry}>
-          <label>Image</label>
+          <label htmlFor="image">Image</label>
           <input
             type="file" // Use type="file" for file upload
-            accept=".jpg,.jpeg,.png" // Specify accepted image file types
-            onChange={handleImageChange} // Handle image file change
+            accept=".jpg,.jpeg,.png"
+            name="image"
+            // onChange={handleImageChange} // Handle image file change
           />
         </div>
         <div className={style.formEntry}>
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            value={user.password}
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
             required
           />
         </div>

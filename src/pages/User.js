@@ -11,9 +11,11 @@ function User() {
   return (
     <div className={style.User}>
       <AuthorDetails
-        name={userCredentials.name}
+        name={userCredentials.username}
         email={userCredentials.email}
-        image={userCredentials.image}
+        image={
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR7GmxlQndDPCyxjYK4o8_qT06Pz9XGH-_8UlJrNyL&s"
+        }
       ></AuthorDetails>
       <div className={style.userOptions}>
         <NavLink to="yourPosts" className={style.link}>

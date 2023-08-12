@@ -6,10 +6,11 @@ import style from "./Login.module.css";
 import jwtDecode from "jwt-decode";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState("");
-
   const { userCredentials, setUserCredentials } = useAuth();
 
   const navigate = useNavigate();
@@ -17,31 +18,32 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://127.0.0.1:3001/userlogin", {
+      const mockURL = `http://127.0.0.1:3001/login`;
+      const response = await fetch(mockURL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: email, password: password }),
-      });
-      // setUserCredentials(data);
-      const { auth_token, user } = await response.json();
-      const decodedData = jwtDecode(auth_token);
-      setUserCredentials({
-        ...user,
-        image:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6vFR1G248Z9vzUNxlmylLrgXUPX3pqzrZpKfYLvo64A&s",
-        auth_token,
+        withCredentials: true,
+        body: JSON.stringify({ user }),
       });
 
-      // Check if the server response indicates a successful login
+      const { data } = await response.json();
+      const auth_token = response.headers.get("Authorization");
+      // console.log(data, auth_token);
+      // const res = await fetch(`http://127.0.0.1:3001/current_user`, {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: auth_token,
+      //   },
+      //   withCredentials: true,
+      // });
+      // const dat = await res.json();
+      // console.log(dat);
       if (response.status === 200) {
-        // Navigate to the authenticated page
+        setUserCredentials({ ...data, auth_token });
         navigate("/user");
-      } else if (response.status >= 500) {
-        throw Error("Server error");
-      } else if (response.status >= 400) {
-        throw Error("Invalid email or password! Try again");
       }
     } catch (error) {
       setError(
@@ -53,23 +55,25 @@ const Login = () => {
   return (
     <div className={style.Login}>
       <h1 className={style.loginHeader}>Login</h1>
-      {error && <div className={style.error}>{error}</div>}
+      {/* {error && <div className={style.error}>{error}</div>} */}
       <form onSubmit={handleSubmit}>
         <div className={style.formEntry}>
-          <label>Email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            value={user.email}
+            onChange={(e) => setUser({ ...user, email: e.target.value })}
             required
           />
         </div>
         <div className={style.formEntry}>
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            value={user.password}
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
             required
           />
         </div>

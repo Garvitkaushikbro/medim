@@ -1,10 +1,7 @@
 .Login {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: fit-content;
+  margin: 1rem auto;
 
-  width: 40%;
   background-color: var(--color-1);
   border: 2px solid var(--color-3);
   border-radius: 1rem;
@@ -42,8 +39,6 @@
 
 .formEntry input {
   border-radius: 1rem;
-  width: 70%;
-  height: 80%;
   padding: 1rem 0.5rem;
   font-size: 2rem;
   color: var(--color-3);
