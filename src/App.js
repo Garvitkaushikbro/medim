@@ -37,7 +37,7 @@ function App() {
               index
               element={
                 <Section
-                  url={"http://127.0.0.1:3001/articlebylogeduser"}
+                  url={`http://127.0.0.1:3001/authorPosts/${userCredentials?._id}`}
                   sectionId={0}
                 ></Section>
               }
@@ -46,17 +46,8 @@ function App() {
               path="yourPosts"
               element={
                 <Section
-                  url={"http://127.0.0.1:3001/articlebylogeduser"}
+                  url={`http://127.0.0.1:3001/authorPosts/${userCredentials?._id}`}
                   sectionId={0}
-                ></Section>
-              }
-            ></Route>
-            <Route
-              path="allPosts"
-              element={
-                <Section
-                  url={"http://127.0.0.1:3001/articlebylogeduser"}
-                  sectionId={1}
                 ></Section>
               }
             ></Route>
@@ -64,7 +55,7 @@ function App() {
               path="recPosts"
               element={
                 <Section
-                  url={"http://127.0.0.1:3001/articlebylogeduser"}
+                  url={`http://127.0.0.1:3001/authorPosts/${userCredentials?._id}`}
                   sectionId={2}
                 ></Section>
               }
@@ -97,7 +88,6 @@ function App() {
               }
             ></Route>
           </Route>
-
           <Route
             path="/checkout/:id"
             element={

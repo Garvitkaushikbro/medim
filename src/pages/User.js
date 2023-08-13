@@ -21,9 +21,6 @@ function User() {
         <NavLink to="yourPosts" className={style.link}>
           Your Posts
         </NavLink>
-        <NavLink to="allPosts" className={style.link}>
-          All Posts
-        </NavLink>
         <NavLink to="recPosts" className={style.link}>
           Rec Post
         </NavLink>

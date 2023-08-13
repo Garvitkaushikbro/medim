@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import AddForm from "../pages/AddForm";
 import FilterForm from "../pages/FilterForm";
 import { useAuth } from "../contexts/AuthContext";
-import axios from "axios";
 import Search from "./Search";
 import Filter from "./Filter";
 import ListPosts from "./ListPosts";
@@ -27,11 +26,7 @@ function Section({ url, sectionId }) {
 
   useEffect(() => {
     async function fetchPosts() {
-      let URL = "#";
-      if (sectionId === 0)
-        URL = `http://127.0.0.1:3001/authorPosts/${userCredentials._id}`;
-
-      const response = await fetch(URL, {
+      const response = await fetch(url, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -39,11 +34,10 @@ function Section({ url, sectionId }) {
         credentials: "include",
       });
       const posts = await response.json();
-      console.log(posts);
       setPosts(posts);
     }
     fetchPosts();
-  }, [userCredentials._id, sectionId]);
+  }, []);
 
   useEffect(
     function () {
