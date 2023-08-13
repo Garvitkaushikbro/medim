@@ -1,38 +1,47 @@
 import { useState } from "react";
 import style from "./AddForm.module.css";
 import { useAuth } from "../contexts/AuthContext";
-import axios from "axios";
 
 function AddForm({ setAddFormVisible, setYourPosts }) {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [topic, setTopic] = useState("");
+  const [image, setImage] = useState("");
   const { userCredentials, setUserCredentials } = useAuth();
 
   async function handleSubmit(event, setAddFormVisible) {
     event.preventDefault();
     setAddFormVisible(false);
-    const newPost = {
-      title: title,
-      description: text,
-      topics: topic,
-    };
+    const publishDate = new Intl.DateTimeFormat("en-GB").format(new Date());
+    console.log(publishDate);
 
-    const response = await axios.post(
-      "http://127.0.0.1:3001/create",
-      {
-        title: title,
-        description: text,
-        topics: topic,
+    const newPost = {
+      title,
+      text,
+      topic,
+      image,
+      author: userCredentials.name,
+      publishDate,
+      likes: [],
+      comments: [],
+      views: [],
+      authorId: userCredentials._id,
+    };
+    // console.log(newPost);
+
+    const URL = `http://127.0.0.1:3001/addPost`;
+    await fetch(URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-      {
-        headers: {
-          Authorization: `Bearer ${userCredentials.auth_token}`, // Include the token as a Bearer token in the header
-        },
-      }
-    );
+      credentials: "include",
+      body: JSON.stringify(newPost),
+    });
+
     setYourPosts((c) => {
-      return [...c, response.data];
+      console.log([...c, newPost]);
+      return [...c, newPost];
     });
     setAddFormVisible(false);
   }
@@ -44,7 +53,7 @@ function AddForm({ setAddFormVisible, setYourPosts }) {
           className={style.form_post}
           onSubmit={(event) => handleSubmit(event, setAddFormVisible)}
         >
-          <label for="form_post_title" className={style.form_post_label}>
+          <label htmlFor="form_post_title" className={style.form_post_label}>
             Title
           </label>
           <input
@@ -57,7 +66,7 @@ function AddForm({ setAddFormVisible, setYourPosts }) {
             }}
             placeholder="Add title for post"
           />
-          <label for="form_post_text" className={style.form_post_label}>
+          <label htmlFor="form_post_text" className={style.form_post_label}>
             Description
           </label>
           <input
@@ -70,7 +79,7 @@ function AddForm({ setAddFormVisible, setYourPosts }) {
             }}
             placeholder="Add text for post"
           />
-          <label for="form_post_topic" className={style.form_post_label}>
+          <label htmlFor="form_post_topic" className={style.form_post_label}>
             Topic
           </label>
           <input
@@ -83,13 +92,17 @@ function AddForm({ setAddFormVisible, setYourPosts }) {
             }}
             placeholder="Add topic for post"
           />
-          <label for="form_post_image" className={style.form_post_label}>
+          <label htmlFor="form_post_image" className={style.form_post_label}>
             Image
           </label>
           <input
-            type="file"
+            type="text"
             name="form_post_image"
             className={style.form_post_entry}
+            value={image}
+            onChange={(e) => {
+              setImage(e.target.value);
+            }}
             placeholder="Add image"
           />
 

@@ -11,76 +11,59 @@ function Post({ post, setYourPosts }) {
   const [isEditFormVisible, setEditFormVisible] = useState(false);
   const navigate = useNavigate();
   const { userCredentials, setUserCredentials } = useAuth();
-
+  // text,
   let {
     title,
     topic,
-    description: text,
+    image,
     author,
-    id,
-    author_id,
-    created_at,
+    _id,
+    authorId,
+    publishDate,
+    likes,
+    comments,
+    views,
   } = post;
-  // let authorId = 1;
-  let publishTime = "5/8/23";
-  created_at = new Date(created_at);
-  created_at = new Intl.DateTimeFormat("en-in").format(created_at);
-  publishTime = created_at;
-  text = text.slice(0, 100);
-  text += "......... ";
-  let image =
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyZ7RA3mlDh5vqCoNLmv5kUwDpKE8KN4ldm57DJepB8Q&s";
 
   function handlePostDelete() {
-    // synchronization with server required
-    axios
-      .delete(`http://127.0.0.1:3001/delete`, {
-        body: { id },
-        headers: { Authorization: `Bearer ${userCredentials.auth_token}` },
-      })
-      .then((response) => {
-        console.log("delete", response);
-        setYourPosts?.((c) => {
-          localStorage.setItem(
-            "posts_1",
-            JSON.stringify(c.filter((elm) => elm.id !== id))
-          );
-          return c.filter((elm) => elm.id !== id);
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    // axios
+    //   .delete(`http://127.0.0.1:3001/delete`, {
+    //     body: { id },
+    //     headers: { Authorization: `Bearer ${userCredentials.auth_token}` },
+    //   })
+    //   .then((response) => {
+    //     console.log("delete", response);
+    //     setYourPosts?.((c) => {
+    //       localStorage.setItem(
+    //         "posts_1",
+    //         JSON.stringify(c.filter((elm) => elm.id !== id))
+    //       );
+    //       return c.filter((elm) => elm.id !== id);
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
   }
 
   function handlePostEdit() {
     setEditFormVisible(true);
   }
 
-  function handleClick() {
-    navigate(`/post/${id}`);
-  }
-
   return (
     <div className={style.Post}>
       <div className={style.postContent}>
         <div className={style.postImgContainer}>
-          <img src={image}></img>
+          <img src={image} alt="postimage"></img>
         </div>
         <div className={style.postWrite}>
           <div className={style.postTitle}>{title}</div>
-          <div className={style.postText}>
-            {text}
-            <span
-              style={{ cursor: "pointer", fontWeight: "bold" }}
-              onClick={handleClick}
-            >
-              Click to Continue Reading
-            </span>
-          </div>
-          <div className={style.postPublishTime}>{publishTime}</div>
+          <div className={style.postPublishTime}>{publishDate}</div>
           <div className={style.postAuthor}>
-            <Link to={`/checkout/${author_id}`}>Author | {author_id}</Link>
+            <Link to={`/author/${authorId}`}>Author | {author}</Link>
+          </div>
+          <div className={style.readPost}>
+            <Link to={`/post/${_id}`}>Read Post</Link>
           </div>
         </div>
       </div>
@@ -122,7 +105,7 @@ function Post({ post, setYourPosts }) {
       )}
       {setYourPosts && isEditFormVisible && (
         <EditForm
-          id={id}
+          id={_id}
           setYourPosts={setYourPosts}
           setEditFormVisible={setEditFormVisible}
         ></EditForm>

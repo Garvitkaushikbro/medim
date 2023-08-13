@@ -108,7 +108,7 @@ function App() {
           ></Route>
 
           <Route
-            path="/post/:id"
+            path="/post/:postId"
             element={
               <Protected userCredentials={userCredentials}>
                 <FullPost></FullPost>

@@ -60,3 +60,10 @@
   width: 1rem;
   cursor: pointer;
 }
+
+.readPost {
+  font-size: 3rem;
+  border: 0.1rem solid black;
+  text-align: center;
+  color: black;
+}

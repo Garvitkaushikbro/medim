@@ -1,19 +1,31 @@
+import { useEffect, useState } from "react";
 import style from "./FullPost.module.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function FullPost() {
   // get this data from either server or from previos page
-  let { title, topics, image, text, publishTime, author, authorId, id } = {
-    title: "Nature",
-    topic: "environment",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyZ7RA3mlDh5vqCoNLmv5kUwDpKE8KN4ldm57DJepB8Q&s",
-    text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    publishTime: "3/8/23",
-    author: "garvit",
-    authorId: "2",
-    id: "postid1",
-  };
+  const { postId } = useParams();
+  const [post, setPost] = useState({});
+  useEffect(
+    function () {
+      async function fetchPost() {
+        const URL = `http://127.0.0.1:3001/post/${postId}`;
+        const response = await fetch(URL, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+        const data = await response.json();
+        setPost(data);
+      }
+      fetchPost();
+    },
+    [postId]
+  );
+
+  let { title, topic, image, text, publishTime, author, authorId } = post;
 
   return (
     <div className={style.FullPost}>
@@ -27,7 +39,7 @@ function FullPost() {
             <div className={style.postText}>{text}</div>
             <div className={style.postPublishTime}>{publishTime}</div>
             <div className={style.postAuthor}>
-              <Link to={`/checkout/${authorId}`}>Author | {authorId}</Link>
+              <Link to={`/checkout/${authorId}`}>Author | {author}</Link>
             </div>
           </div>
         </div>

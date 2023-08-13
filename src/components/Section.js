@@ -19,34 +19,31 @@ function Section({ url, sectionId }) {
   const [addOption, setAddOption] = useState(() =>
     sectionId === 0 ? true : false
   );
-  console.log(`${sectionId} is rendering`);
 
   useEffect(() => {
     if (sectionId === 0) setAddOption(true);
     else setAddOption(false);
   });
 
-  // useEffect(() => {
-  //   function fetchPosts() {
-  //     // Make post request for saving data
-  //     axios
-  //       .get(url, {
-  //         headers: {
-  //           Authorization: `Bearer ${userCredentials.auth_token}`, // Include the token as a Bearer token in the header
-  //         },
-  //       })
-  //       .then((response) => {
-  //         // Handle the API response here
-  //         setPosts(response.data);
-  //       })
-  //       .catch((error) => {
-  //         // Handle any errors that occurred during the API request
-  //         console.error("Error:", error);
-  //       });
-  //     console.log(`${sectionId} fething posts`);
-  //   }
-  //   fetchPosts();
-  // }, [userCredentials.auth_token]);
+  useEffect(() => {
+    async function fetchPosts() {
+      let URL = "#";
+      if (sectionId === 0)
+        URL = `http://127.0.0.1:3001/authorPosts/${userCredentials._id}`;
+
+      const response = await fetch(URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const posts = await response.json();
+      console.log(posts);
+      setPosts(posts);
+    }
+    fetchPosts();
+  }, [userCredentials._id, sectionId]);
 
   useEffect(
     function () {
