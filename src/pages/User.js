@@ -11,7 +11,7 @@ function User() {
   return (
     <div className={style.User}>
       <AuthorDetails
-        name={userCredentials.username}
+        name={userCredentials.name}
         email={userCredentials.email}
         image={
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR7GmxlQndDPCyxjYK4o8_qT06Pz9XGH-_8UlJrNyL&s"

@@ -3,59 +3,51 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import style from "./Login.module.css";
 
-import jwtDecode from "jwt-decode";
-
 const Login = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState({
+    email: "",
+    password: "",
+  });
   const { userCredentials, setUserCredentials } = useAuth();
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError({
+      email: "",
+      password: "",
+    });
     try {
-      const mockURL = `http://127.0.0.1:3001/login`;
-      const response = await fetch(mockURL, {
+      const URL = `http://127.0.0.1:3001/login`;
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        withCredentials: true,
-        body: JSON.stringify({ user }),
+        credentials: "include",
+        body: JSON.stringify(user),
       });
 
-      const { data } = await response.json();
-      const auth_token = response.headers.get("Authorization");
-      // console.log(data, auth_token);
-      // const res = await fetch(`http://127.0.0.1:3001/current_user`, {
-      //   method: "GET",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: auth_token,
-      //   },
-      //   withCredentials: true,
-      // });
-      // const dat = await res.json();
-      // console.log(dat);
       if (response.status === 200) {
-        setUserCredentials({ ...data, auth_token });
+        const data = await response.json();
+        setUserCredentials({ ...data });
         navigate("/user");
       }
-    } catch (error) {
-      setError(
-        error.message || "An error occurred while processing your request"
-      );
-    }
+      if (response.status === 400) {
+        const err = await response.json();
+        setError(err);
+      }
+    } catch (error) {}
   };
 
   return (
     <div className={style.Login}>
       <h1 className={style.loginHeader}>Login</h1>
-      {/* {error && <div className={style.error}>{error}</div>} */}
       <form onSubmit={handleSubmit}>
         <div className={style.formEntry}>
           <label htmlFor="email">Email</label>
@@ -67,6 +59,8 @@ const Login = () => {
             required
           />
         </div>
+        {error.email !== "" && <div className={style.error}>{error.email}</div>}
+
         <div className={style.formEntry}>
           <label htmlFor="password">Password</label>
           <input
@@ -77,6 +71,9 @@ const Login = () => {
             required
           />
         </div>
+        {error.password !== "" && (
+          <div className={style.error}>{error.password}</div>
+        )}
         <div>
           <button type="submit">Login</button>
         </div>

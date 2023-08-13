@@ -5,7 +5,15 @@ import { Link } from "react-router-dom";
 function NavBar() {
   const { userCredentials, setUserCredentials } = useAuth();
 
-  function handleLogout() {
+  async function handleLogout() {
+    const URL = `http://127.0.0.1:3001/logout`;
+    await fetch(URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
     setUserCredentials(null);
   }
 

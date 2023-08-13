@@ -26,27 +26,27 @@ function Section({ url, sectionId }) {
     else setAddOption(false);
   });
 
-  useEffect(() => {
-    function fetchPosts() {
-      // Make post request for saving data
-      axios
-        .get(url, {
-          headers: {
-            Authorization: `Bearer ${userCredentials.auth_token}`, // Include the token as a Bearer token in the header
-          },
-        })
-        .then((response) => {
-          // Handle the API response here
-          setPosts(response.data);
-        })
-        .catch((error) => {
-          // Handle any errors that occurred during the API request
-          console.error("Error:", error);
-        });
-      console.log(`${sectionId} fething posts`);
-    }
-    fetchPosts();
-  }, [userCredentials.auth_token]);
+  // useEffect(() => {
+  //   function fetchPosts() {
+  //     // Make post request for saving data
+  //     axios
+  //       .get(url, {
+  //         headers: {
+  //           Authorization: `Bearer ${userCredentials.auth_token}`, // Include the token as a Bearer token in the header
+  //         },
+  //       })
+  //       .then((response) => {
+  //         // Handle the API response here
+  //         setPosts(response.data);
+  //       })
+  //       .catch((error) => {
+  //         // Handle any errors that occurred during the API request
+  //         console.error("Error:", error);
+  //       });
+  //     console.log(`${sectionId} fething posts`);
+  //   }
+  //   fetchPosts();
+  // }, [userCredentials.auth_token]);
 
   useEffect(
     function () {
