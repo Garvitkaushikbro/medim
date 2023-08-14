@@ -11,7 +11,7 @@ import SortComments from "./SortComments";
 
 import style from "./Section.module.css";
 
-function Section({ url, sectionId }) {
+function Section({ url, sectionId, savePost, setSavePost }) {
   const { userCredentials } = useAuth();
   const [Posts, setPosts] = useState([]);
   const [displayPosts, setDisplayPosts] = useState([]);
@@ -72,6 +72,8 @@ function Section({ url, sectionId }) {
         <ListPosts
           displayPosts={displayPosts}
           setYourPosts={setPosts}
+          savePost={savePost}
+          setSavePost={setSavePost}
         ></ListPosts>
       ) : (
         <></>

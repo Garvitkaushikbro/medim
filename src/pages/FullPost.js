@@ -100,7 +100,11 @@ function FullPost() {
         </div>
 
         <div className={style.likes}>
-          <div>{post?.views?.length}Views</div>
+          <div>{post?.views?.length} Views</div>
+        </div>
+
+        <div className={style.likes}>
+          <div>{parseInt(post?.text?.split(" ").length / 10)} Minute read</div>
         </div>
         <div className={style.comments}>
           <form>

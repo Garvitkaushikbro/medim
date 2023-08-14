@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 import style from "./Posts.module.css";
 
-function Post({ post, setYourPosts }) {
+function Post({ post, setYourPosts, savePost, setSavePost }) {
   const [isEditFormVisible, setEditFormVisible] = useState(false);
   const navigate = useNavigate();
   const { userCredentials, setUserCredentials } = useAuth();
@@ -25,6 +25,7 @@ function Post({ post, setYourPosts }) {
     comments,
     views,
   } = post;
+
   async function handlePostDelete() {
     const URL = `http://127.0.0.1:3001/deletePost/${_id}`;
     await fetch(URL, {
@@ -41,28 +42,18 @@ function Post({ post, setYourPosts }) {
         });
       });
     }
-    // axios
-    //   .delete(`http://127.0.0.1:3001/deletePost/${_id}`, {
-    //     body: { id },
-    //     headers: { Authorization: `Bearer ${userCredentials.auth_token}` },
-    //   })
-    //   .then((response) => {
-    //     console.log("delete", response);
-    //     setYourPosts?.((c) => {
-    //       localStorage.setItem(
-    //         "posts_1",
-    //         JSON.stringify(c.filter((elm) => elm.id !== id))
-    //       );
-    //       return c.filter((elm) => elm.id !== id);
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
   }
 
   function handlePostEdit() {
     setEditFormVisible(true);
+  }
+
+  function handleSavePost(_id) {
+    // _id is post
+    let post = [_id];
+    if (savePost?.length > 0) post = [...savePost, ...post];
+    const uniqueArray = [...new Set(post)];
+    setSavePost(uniqueArray);
   }
 
   return (
@@ -77,8 +68,16 @@ function Post({ post, setYourPosts }) {
           <div className={style.postAuthor}>
             <Link to={`/authorProfile/${authorId}`}>Author | {author}</Link>
           </div>
-          <div className={style.readPost}>
-            <Link to={`/post/${_id}`}>Read Post</Link>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <div className={style.readPost}>
+              <Link to={`/post/${_id}`}>Read Post</Link>
+            </div>
+            <div
+              className={style.savePost}
+              onClick={() => handleSavePost(post)}
+            >
+              SavePost
+            </div>
           </div>
         </div>
       </div>

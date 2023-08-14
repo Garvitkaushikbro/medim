@@ -67,3 +67,12 @@
   text-align: center;
   color: black;
 }
+
+.savePost {
+  font-size: 3rem;
+  border: 0.1rem solid black;
+  color: var(--color-5);
+
+  text-align: center;
+  color: black;
+}

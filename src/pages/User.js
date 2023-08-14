@@ -7,7 +7,6 @@ import style from "./User.module.css";
 
 function User() {
   const { setUserCredentials, userCredentials } = useAuth();
-
   return (
     <div className={style.User}>
       <AuthorDetails
@@ -29,6 +28,9 @@ function User() {
         </NavLink>
         <NavLink to="topPosts" className={style.link}>
           Top Posts
+        </NavLink>
+        <NavLink to="savePost" className={style.link}>
+          Saved Posts
         </NavLink>
         <NavLink to="topicList" className={style.link}>
           Topic List

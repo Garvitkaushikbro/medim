@@ -12,6 +12,8 @@ import Section from "./components/Section";
 import SubscriptionPlans from "./pages/SubscriptionPlans";
 import PremiumUser from "./pages/PremiumUser";
 import TopicList from "./components/TopicList";
+import SavePost from "./components/SavePost";
+import { useState } from "react";
 
 function App() {
   const { userCredentials } = useAuth();
@@ -32,6 +34,7 @@ function App() {
     return children;
   }
 
+  const [savePost, setSavePost] = useState([]);
   return (
     <>
       <BrowserRouter>
@@ -62,6 +65,8 @@ function App() {
                 <Section
                   url={`http://127.0.0.1:3001/authorPosts/${userCredentials?._id}`}
                   sectionId={0}
+                  savePost={savePost}
+                  setSavePost={setSavePost}
                 ></Section>
               }
             ></Route>
@@ -71,6 +76,8 @@ function App() {
                 <Section
                   url={`http://127.0.0.1:3001/authorPosts/${userCredentials?._id}`}
                   sectionId={0}
+                  savePost={savePost}
+                  setSavePost={setSavePost}
                 ></Section>
               }
             ></Route>
@@ -80,6 +87,8 @@ function App() {
                 <Section
                   url={`http://127.0.0.1:3001/allPosts`}
                   sectionId={1}
+                  savePost={savePost}
+                  setSavePost={setSavePost}
                 ></Section>
               }
             ></Route>
@@ -89,6 +98,8 @@ function App() {
                 <Section
                   url={`http://127.0.0.1:3001/recPosts/${userCredentials?._id}`}
                   sectionId={2}
+                  savePost={savePost}
+                  setSavePost={setSavePost}
                 ></Section>
               }
             ></Route>
@@ -98,12 +109,18 @@ function App() {
                 <Section
                   url={"http://127.0.0.1:3001/topPosts"}
                   sectionId={3}
+                  savePost={savePost}
+                  setSavePost={setSavePost}
                 ></Section>
               }
             ></Route>
             <Route
+              path="savePost"
+              element={<SavePost sectionId={5} savePost={savePost}></SavePost>}
+            ></Route>
+            <Route
               path="topicList"
-              element={<TopicList sectionId={5}></TopicList>}
+              element={<TopicList sectionId={6}></TopicList>}
             ></Route>
           </Route>
           <Route
