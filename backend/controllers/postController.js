@@ -139,6 +139,20 @@ module.exports.editPost_put = async (req, res) => {
   res.status(200).json(updatedPost);
 };
 
+module.exports.toggleLikeStatus_put = async (req, res) => {
+  const postId = req.params.postId;
+  const { likedAuthorId: client } = req.body;
+
+  const updatedPost = await Post.findById(postId);
+  if (updatedPost.likes.includes(client)) {
+    updatedPost.likes.pull(client);
+  } else {
+    updatedPost.likes.push(client);
+  }
+  await updatedPost.save();
+  res.send("Success");
+};
+
 // controller actions
 // module.exports.signup_get = (req, res) => {
 //   res.render('signup');

@@ -88,14 +88,18 @@
 }
 
 .likes button {
-  background-color: inherit;
   outline: none;
   border: none;
-}
+  background-color: pink;
+  font-size: 2rem;
 
-.likes button svg {
   width: 4rem;
-  fill: white;
   width: 10rem;
   height: 5rem;
 }
+
+/* .likes button svg {
+  width: 4rem;
+  width: 10rem;
+  height: 5rem;
+} */

@@ -21,6 +21,13 @@ router.delete(
   postController.deletePost_delete
 );
 router.put("/editPost/:postId", requireAuth, postController.editPost_put);
+
+router.put(
+  "/toggleLikeStatus/:postId",
+  requireAuth,
+  postController.toggleLikeStatus_put
+);
+
 // router.get("/logout", authController.logout_get);
 
 // router.get('/signup', authController.signup_get);
