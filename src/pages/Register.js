@@ -33,14 +33,10 @@ const Register = () => {
         credentials: "include", // Add this line
         body: JSON.stringify({
           ...user,
-          following: [],
-          posts_read: [],
-          posts_liked: [],
         }),
       });
       if (response.status === 200) {
         const data = await response.json();
-        // Access and display the Set-Cookie header
         setUserCredentials({ ...data });
         navigate("/user");
       }

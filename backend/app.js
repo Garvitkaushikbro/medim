@@ -6,10 +6,7 @@ const authorRoutes = require("./routes/authorRoutes");
 const cookieParser = require("cookie-parser");
 
 // const { requireAuth, checkUser } = require("./middleware/authMiddleware");
-// const Topic = require("./models/topic");
-// const Experience = require("./models/experience");
-// const Company = require("./models/company");
-// const Question = require("./models/question");
+
 const cors = require("cors");
 
 const app = express();
@@ -29,9 +26,6 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(cookieParser());
 
-// view engine
-// app.set("view engine", "ejs");
-
 // database connection
 const dbURI = "mongodb+srv://gk1:test1234@cluster0.mxtmn.mongodb.net/";
 mongoose
@@ -45,6 +39,43 @@ mongoose
     console.log("server started");
   })
   .catch((err) => console.log(err));
+
+const stripe = require("stripe")(
+  "sk_test_51Nf5G5SEwkmLhDCHmcMD4gsfg9FxPyCCmOhieI9tLGM8cTkFQlYhBFd0uiJAPXzRQ18LO00vS6L2tsYXNHykU95l00L6wyYmlO"
+);
+
+const storeItems = new Map([
+  [1, { priceInCents: 300, name: "Premium" }],
+  [2, { priceInCents: 500, name: "Super Premium" }],
+  [3, { priceInCents: 1000, name: "Super Super Premium" }],
+]);
+
+app.post("/create-checkout-session", async (req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: req.body.items.map((item) => {
+        const storeItem = storeItems.get(item.id);
+        return {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: storeItem.name,
+            },
+            unit_amount: storeItem.priceInCents,
+          },
+          quantity: item.quantity,
+        };
+      }),
+      success_url: `http://localhost:3000/premiumUser`,
+      cancel_url: `http://localhost:3000/subscriptionPlans`,
+    });
+    res.json({ url: session.url });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 // routes
 app.use(authRoutes);

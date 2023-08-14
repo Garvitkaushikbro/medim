@@ -1,10 +1,5 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
-// const Question = require('../models/question');
-// const Topic = require('../models/topic');
-// const Company = require("../models/company");
-// const Experience = require("../models/experience");
-// handle errors
 
 module.exports.toggleFollowStatus_put = async (req, res) => {
   const authorId = req.params.authorId;

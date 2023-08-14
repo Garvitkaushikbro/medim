@@ -40,7 +40,6 @@ function AddForm({ setAddFormVisible, setYourPosts }) {
     });
 
     setYourPosts((c) => {
-      console.log([...c, newPost]);
       return [...c, newPost];
     });
     setAddFormVisible(false);

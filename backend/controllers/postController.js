@@ -132,7 +132,6 @@ module.exports.post_get = async (req, res) => {
 
   try {
     const author = await User.findById(res.locals.user._id);
-    console.log("dfsldkjfldjf", author);
 
     // Ensure postId is not already in today_views
     if (!author?.today_views?.includes(postId)) {
@@ -148,7 +147,6 @@ module.exports.post_get = async (req, res) => {
 
     res.status(200).json(post);
   } catch (err) {
-    console.error("Error:", err);
     res
       .status(500)
       .json({ error: "An error occurred while fetching the post" });

@@ -24,7 +24,14 @@ function FullPost() {
         });
         const data = await response.json();
         setPost(data);
-        setIsLiked(data.likes.includes(userCredentials._id));
+        setUserCredentials((c) => {
+          if (!c?.today_views?.includes(postId)) {
+            c?.today_views?.push(postId);
+          }
+          console.log(c?.today_views);
+          return c;
+        });
+        setIsLiked(data?.likes?.includes(userCredentials._id));
       }
       fetchPost();
     },
@@ -90,6 +97,10 @@ function FullPost() {
             {isLiked ? "Unlike" : "Like"}
           </button>
           <div>{post?.likes?.length} Likes</div>
+        </div>
+
+        <div className={style.likes}>
+          <div>{post?.views?.length}Views</div>
         </div>
         <div className={style.comments}>
           <form>

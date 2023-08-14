@@ -13,9 +13,27 @@ import TopPosts from "./components/TopPosts";
 import MorePosts from "./components/MorePosts";
 import TopicList from "./components/TopicList";
 import Section from "./components/Section";
+import SubscriptionPlans from "./pages/SubscriptionPlans";
+import PremiumUser from "./pages/PremiumUser";
 
 function App() {
   const { userCredentials } = useAuth();
+
+  function Protected({ userCredentials, children }) {
+    if (!userCredentials) {
+      return <Navigate to="/login" replace />;
+    }
+    return children;
+  }
+
+  function SubscriptionCheck({ userCredentials, children }) {
+    console.log(userCredentials.maxViews, userCredentials.today_views.length);
+    if (userCredentials.maxViews < userCredentials.today_views.length) {
+      console.log("HIhihihihihiihihi");
+      return <Navigate to="/subscriptionPlans" replace />;
+    }
+    return children;
+  }
 
   return (
     <>
@@ -25,6 +43,14 @@ function App() {
           <Route path="/" element={<Home></Home>}></Route>
           <Route path="/login" element={<Login></Login>}></Route>
           <Route path="/register" element={<Register></Register>}></Route>
+          <Route
+            path="/subscriptionPlans"
+            element={<SubscriptionPlans></SubscriptionPlans>}
+          ></Route>
+          <Route
+            path="/premiumUser"
+            element={<PremiumUser></PremiumUser>}
+          ></Route>
           <Route
             path="/user"
             element={
@@ -110,7 +136,9 @@ function App() {
             path="/post/:postId"
             element={
               <Protected userCredentials={userCredentials}>
-                <FullPost></FullPost>
+                <SubscriptionCheck userCredentials={userCredentials}>
+                  <FullPost></FullPost>
+                </SubscriptionCheck>
               </Protected>
             }
           ></Route>
@@ -118,13 +146,6 @@ function App() {
       </BrowserRouter>
     </>
   );
-}
-
-function Protected({ userCredentials, children }) {
-  if (!userCredentials) {
-    return <Navigate to="/login" replace />;
-  }
-  return children;
 }
 
 export default App;
