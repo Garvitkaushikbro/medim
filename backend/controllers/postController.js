@@ -153,6 +153,37 @@ module.exports.toggleLikeStatus_put = async (req, res) => {
   res.send("Success");
 };
 
+module.exports.addComment_put = async (req, res) => {
+  const postId = req.params.postId;
+  console.log(postId);
+  const comment = req.body;
+  console.log(comment);
+
+  try {
+    const updatedPost = await Post.findById(postId);
+
+    if (!updatedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const newComment = {
+      text: comment.text,
+      commentAuthorId: comment.commentAuthorId,
+    };
+
+    updatedPost.comments.push(newComment);
+
+    await updatedPost.save();
+
+    res.json({ message: "Comment added successfully", updatedPost });
+  } catch (error) {
+    console.error("Error:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while adding the comment" });
+  }
+};
+
 // controller actions
 // module.exports.signup_get = (req, res) => {
 //   res.render('signup');

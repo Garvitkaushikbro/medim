@@ -10,6 +10,7 @@ function FullPost() {
   const { postId } = useParams();
   const [post, setPost] = useState({});
   const [isLiked, setIsLiked] = useState();
+  const [currentComment, setCurrentComment] = useState("");
   useEffect(
     function () {
       async function fetchPost() {
@@ -43,6 +44,29 @@ function FullPost() {
     setIsLiked((c) => !c);
   }
 
+  async function handleCommentClick(event) {
+    event.preventDefault();
+    await fetch(`http://127.0.0.1:3001/addComment/${postId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        text: currentComment,
+        commentAuthorId: userCredentials._id,
+      }),
+      credentials: "include",
+    });
+    setPost((prevPost) => ({
+      ...prevPost,
+      comments: [
+        ...prevPost.comments,
+        { text: currentComment, commentAuthorId: userCredentials._id },
+      ],
+    }));
+    setCurrentComment("");
+  }
+
   let { title, topic, image, text, publishTime, author, authorId } = post;
 
   return (
@@ -68,7 +92,15 @@ function FullPost() {
           <div>{post?.likes?.length} Likes</div>
         </div>
         <div className={style.comments}>
-          {/* <DisplayComments comments={post.comments}></DisplayComments> */}
+          <form>
+            <input
+              value={currentComment}
+              onChange={(e) => setCurrentComment(e.target.value)}
+              placeholder="Add comment..."
+            ></input>
+            <button onClick={handleCommentClick}>Add</button>
+          </form>
+          <DisplayComments comments={post.comments}></DisplayComments>
         </div>
       </div>
     </div>

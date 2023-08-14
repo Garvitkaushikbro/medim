@@ -28,6 +28,8 @@ router.put(
   postController.toggleLikeStatus_put
 );
 
+router.put("/addComment/:postId", requireAuth, postController.addComment_put);
+
 // router.get("/logout", authController.logout_get);
 
 // router.get('/signup', authController.signup_get);

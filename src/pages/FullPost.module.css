@@ -98,6 +98,37 @@
   height: 5rem;
 }
 
+.comments {
+  align-self: center;
+  background-color: var(--color-3);
+  width: 50%;
+  border-radius: 1rem;
+
+  padding: 1rem;
+}
+
+.comments form {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.comments form input {
+  width: 80%;
+  margin: 0 auto;
+  padding: 1rem;
+
+  font-size: 2rem;
+  border-radius: 1rem;
+}
+.comments form button {
+  width: 20%;
+  height: 20%;
+  border-radius: 1rem;
+  font-size: 2rem;
+  padding: 1rem;
+}
+
 /* .likes button svg {
   width: 4rem;
   width: 10rem;
