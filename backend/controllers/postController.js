@@ -70,15 +70,14 @@ module.exports.authorPosts_get = async (req, res) => {
   console.log(authorId);
   try {
     const [authorDetails] = await User.find({ _id: authorId });
-    console.log("fjsaljf", authorDetails);
     const postPromises = authorDetails.posts_written?.map(async (postId) => {
       const post = await Post.findById(postId);
       return post;
     });
 
     const posts = await Promise.all(postPromises);
-    // console.log(updatedPosts);
-    res.status(200).json(posts);
+    const updatedPosts = posts.filter((p) => p !== null);
+    res.status(200).json(updatedPosts);
   } catch (err) {
     console.log(err);
   }
@@ -99,7 +98,7 @@ module.exports.deletePost_delete = async (req, res) => {
   const postId = req.params.postId;
   try {
     const result = await Post.deleteOne({ _id: postId }); // Replace idToDelete with the actual document's _id you want to delete
-
+    // later delete the postId of the post from wherever it is there in USer and Post models
     if (result.deletedCount === 1) {
       console.log("Document deleted successfully.");
     } else {
@@ -111,6 +110,34 @@ module.exports.deletePost_delete = async (req, res) => {
     console.error("Error:", error);
     res.send("Not deleted succesfully");
   }
+};
+
+module.exports.editPost_put = async (req, res) => {
+  const postId = req.params.postId;
+
+  const existingPost = await Post.findById(postId);
+  if (!existingPost) {
+    return res.status(404).json({ message: "Post not found" });
+  }
+
+  // Update properties if they are provided in the payload
+  if (req.body.title !== undefined && req.body.title !== "") {
+    existingPost.title = req.body.title;
+  }
+  if (req.body.topic !== undefined && req.body.topic !== "") {
+    existingPost.topic = req.body.topic;
+  }
+  if (req.body.image !== undefined && req.body.image !== "") {
+    existingPost.image = req.body.image;
+  }
+  if (req.body.text !== undefined && req.body.text !== "") {
+    existingPost.text = req.body.text;
+  }
+
+  // Save the updated post
+  const updatedPost = await existingPost.save();
+
+  res.status(200).json(updatedPost);
 };
 
 // controller actions

@@ -123,7 +123,7 @@ function Post({ post, setYourPosts }) {
       )}
       {setYourPosts && isEditFormVisible && (
         <EditForm
-          id={_id}
+          postId={_id}
           setYourPosts={setYourPosts}
           setEditFormVisible={setEditFormVisible}
         ></EditForm>

@@ -12,6 +12,7 @@ router.post("/addPost", postController.addPost_post);
 router.get("/authorPosts/:authorId", postController.authorPosts_get);
 router.get("/post/:postId", postController.post_get);
 router.delete("/deletePost/:postId", postController.deletePost_delete);
+router.put("/editPost/:postId", postController.editPost_put);
 // router.get("/logout", authController.logout_get);
 
 // router.get('/signup', authController.signup_get);

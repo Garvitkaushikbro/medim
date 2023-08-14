@@ -1,34 +1,42 @@
 import { useState } from "react";
 import style from "./EditForm.module.css";
 
-function EditForm({ id, setEditFormVisible, setYourPosts }) {
+function EditForm({ postId, setEditFormVisible, setYourPosts }) {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [topic, setTopic] = useState("");
+  const [image, setImage] = useState("");
 
   function handleSubmit(event) {
     event.preventDefault();
     setEditFormVisible(false);
     // Make post request for saving data
+    const url = `http://127.0.0.1:3001/editPost/${postId}`;
+    const payload = {
+      title,
+      topic,
+      image,
+      text,
+    };
+
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+      credentials: "include",
+    });
     setYourPosts((c) => {
       // Later make a useEffect that synchronizes with the server and handle errors
-      localStorage.setItem(
-        "posts_1",
-        JSON.stringify(
-          c.map((elm) => {
-            if (elm.id === id)
-              return { ...elm, title: title, text: text, topic: topic };
-            return elm;
-          })
-        )
-      );
       return c.map((elm) => {
-        if (elm.id === id)
+        if (elm._id === postId)
           return {
             ...elm,
             title: title !== "" ? title : elm.title,
             text: text !== "" ? text : elm.text,
-            topic: topic !== topic ? topic : elm.topic,
+            topic: topic !== "" ? topic : elm.topic,
+            image: image !== "" ? image : elm.image,
           };
         return elm;
       });
@@ -39,7 +47,7 @@ function EditForm({ id, setEditFormVisible, setYourPosts }) {
     <div className={style.EditForm}>
       <div className={style.overlay}>
         <form className={style.form_post} onSubmit={handleSubmit}>
-          <label for="form_post_title" className={style.form_post_label}>
+          <label htmlFor="form_post_title" className={style.form_post_label}>
             Title
           </label>
           <input
@@ -52,8 +60,8 @@ function EditForm({ id, setEditFormVisible, setYourPosts }) {
             }}
             placeholder="Add title for post"
           />
-          <label for="form_post_text" className={style.form_post_label}>
-            Description
+          <label htmlFor="form_post_text" className={style.form_post_label}>
+            Text
           </label>
           <input
             type="text"
@@ -65,7 +73,7 @@ function EditForm({ id, setEditFormVisible, setYourPosts }) {
             }}
             placeholder="Add text for post"
           />
-          <label for="form_post_topic" className={style.form_post_label}>
+          <label htmlFor="form_post_topic" className={style.form_post_label}>
             Topic
           </label>
           <input
@@ -78,13 +86,17 @@ function EditForm({ id, setEditFormVisible, setYourPosts }) {
             }}
             placeholder="Add topic for post"
           />
-          <label for="form_post_image" className={style.form_post_label}>
+          <label htmlFor="form_post_image" className={style.form_post_label}>
             Image
           </label>
           <input
-            type="file"
+            type="text"
             name="form_post_image"
             className={style.form_post_entry}
+            value={image}
+            onChange={(e) => {
+              setImage(e.target.value);
+            }}
             placeholder="Add image"
           />
 
