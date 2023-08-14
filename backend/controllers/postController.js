@@ -129,12 +129,29 @@ module.exports.recPosts_get = async (req, res) => {
 
 module.exports.post_get = async (req, res) => {
   const postId = req.params.postId;
-  console.log(postId);
+
   try {
+    const author = await User.findById(res.locals.user._id);
+    console.log("dfsldkjfldjf", author);
+
+    // Ensure postId is not already in today_views
+    if (!author?.today_views?.includes(postId)) {
+      author?.today_views.push(postId);
+      await author.save();
+    }
+
     const post = await Post.findById(postId);
+    if (!post.views.includes(res.locals.user._id)) {
+      post.views.push(res.locals.user._id);
+      await post.save();
+    }
+
     res.status(200).json(post);
   } catch (err) {
-    console.log(err);
+    console.error("Error:", err);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching the post" });
   }
 };
 

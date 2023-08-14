@@ -1,10 +1,5 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-// const Question = require('../models/question');
-// const Topic = require('../models/topic');
-// const Company = require("../models/company");
-// const Experience = require("../models/experience");
-// handle errors
 
 const handleErrors = (err) => {
   console.log(err.message, err.code);
@@ -67,6 +62,7 @@ module.exports.signup_post = async (req, res) => {
 
 module.exports.login_post = async (req, res) => {
   const { email, password } = req.body;
+  console.log("fkldsflsdkfjl", password);
   try {
     const user = await User.login(email, password);
     const token = createToken(user._id);
@@ -76,17 +72,16 @@ module.exports.login_post = async (req, res) => {
       httpOnly: true, // Cookie is not accessible through JavaScript (security)
       sameSite: "none", // Allow cross-site access (important for cross-origin)
     });
-    res
-      .status(200)
-      .json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        posts_read: user.posts_read,
-        posts_liked: user.posts_liked,
-        following: user.following,
-        posts_written: user.posts_written,
-      });
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      posts_read: user.posts_read,
+      posts_liked: user.posts_liked,
+      following: user.following,
+      posts_written: user.posts_written,
+      today_views: user.today_views,
+    });
   } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json(errors);
