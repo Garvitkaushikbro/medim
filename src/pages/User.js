@@ -30,9 +30,6 @@ function User() {
         <NavLink to="topPosts" className={style.link}>
           Top Posts
         </NavLink>
-        <NavLink to="morePosts" className={style.link}>
-          More Posts
-        </NavLink>
         <NavLink to="topicList" className={style.link}>
           Topic List
         </NavLink>

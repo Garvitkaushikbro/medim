@@ -8,13 +8,10 @@ import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 
 import { useAuth } from "./contexts/AuthContext";
-import RecPosts from "./components/RecPosts";
-import TopPosts from "./components/TopPosts";
-import MorePosts from "./components/MorePosts";
-import TopicList from "./components/TopicList";
 import Section from "./components/Section";
 import SubscriptionPlans from "./pages/SubscriptionPlans";
 import PremiumUser from "./pages/PremiumUser";
+import TopicList from "./components/TopicList";
 
 function App() {
   const { userCredentials } = useAuth();
@@ -105,22 +102,8 @@ function App() {
               }
             ></Route>
             <Route
-              path="morePosts"
-              element={
-                <Section
-                  url={"http://127.0.0.1:3001/articlebylogeduser"}
-                  sectionId={4}
-                ></Section>
-              }
-            ></Route>
-            <Route
               path="topicList"
-              element={
-                <Section
-                  url={"http://127.0.0.1:3001/articlebylogeduser"}
-                  sectionId={5}
-                ></Section>
-              }
+              element={<TopicList sectionId={5}></TopicList>}
             ></Route>
           </Route>
           <Route
