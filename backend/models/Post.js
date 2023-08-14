@@ -30,7 +30,7 @@ const postSchema = new mongoose.Schema({
       text: {
         type: String,
       },
-      post_id: {
+      commentAuthorId: {
         type: mongoose.Schema.Types.ObjectId,
       },
     },
