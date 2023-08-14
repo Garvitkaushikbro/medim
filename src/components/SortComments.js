@@ -1,11 +1,11 @@
-import style from "./SortViews.module.css";
+import style from "./SortComments.module.css";
 
-function SortViews({ displayPosts, setDisplayPosts }) {
+function SortComments({ displayPosts, setDisplayPosts }) {
   function handleClick(e) {
     e.preventDefault();
     const updatedPosts = [...displayPosts];
     updatedPosts.sort(
-      (postA, postB) => -postA.views.length + postB.views.length
+      (postA, postB) => -postA.comments.length + postB.comments.length
     );
     console.log(updatedPosts);
     setDisplayPosts(updatedPosts);
@@ -27,9 +27,9 @@ function SortViews({ displayPosts, setDisplayPosts }) {
         />
       </svg>
 
-      <p>Sort By view</p>
+      <p>Sort By Comments</p>
     </div>
   );
 }
 
-export default SortViews;
+export default SortComments;

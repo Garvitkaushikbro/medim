@@ -7,6 +7,7 @@ import Filter from "./Filter";
 import ListPosts from "./ListPosts";
 import SortViews from "./SortViews";
 import SortLikes from "./SortLikes";
+import SortComments from "./SortComments";
 
 import style from "./Section.module.css";
 
@@ -62,6 +63,10 @@ function Section({ url, sectionId }) {
           displayPosts={displayPosts}
           setDisplayPosts={setDisplayPosts}
         ></SortLikes>
+        <SortComments
+          displayPosts={displayPosts}
+          setDisplayPosts={setDisplayPosts}
+        ></SortComments>
       </div>
       {displayPosts.length > 0 ? (
         <ListPosts

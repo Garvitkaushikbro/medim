@@ -96,6 +96,19 @@ module.exports.allPosts_get = async (req, res) => {
   }
 };
 
+module.exports.topPosts_get = async (req, res) => {
+  try {
+    const allPosts = await Post.find();
+    allPosts.sort((postA, postB) => -postA.views.length + postB.views.length);
+    res.status(200).json(allPosts);
+  } catch (error) {
+    console.error("Error:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching all posts" });
+  }
+};
+
 module.exports.recPosts_get = async (req, res) => {
   const authorId = req.params.authorId;
 

@@ -99,7 +99,7 @@ function App() {
               path="topPosts"
               element={
                 <Section
-                  url={"http://127.0.0.1:3001/articlebylogeduser"}
+                  url={"http://127.0.0.1:3001/topPosts"}
                   sectionId={3}
                 ></Section>
               }
