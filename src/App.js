@@ -52,6 +52,15 @@ function App() {
               }
             ></Route>
             <Route
+              path="allPosts"
+              element={
+                <Section
+                  url={`http://127.0.0.1:3001/allPosts`}
+                  sectionId={1}
+                ></Section>
+              }
+            ></Route>
+            <Route
               path="recPosts"
               element={
                 <Section

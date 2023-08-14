@@ -18,6 +18,8 @@ router.get(
 
 router.get("/recPosts/:authorId", requireAuth, postController.recPosts_get);
 
+router.get("/allPosts", requireAuth, postController.allPosts_get);
+
 router.get("/post/:postId", requireAuth, postController.post_get);
 
 router.delete(

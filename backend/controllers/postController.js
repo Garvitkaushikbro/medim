@@ -83,6 +83,19 @@ module.exports.authorPosts_get = async (req, res) => {
   }
 };
 
+module.exports.allPosts_get = async (req, res) => {
+  try {
+    const allPosts = await Post.find();
+    console.log(allPosts);
+    res.status(200).json(allPosts);
+  } catch (error) {
+    console.error("Error:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching all posts" });
+  }
+};
+
 module.exports.recPosts_get = async (req, res) => {
   const authorId = req.params.authorId;
 

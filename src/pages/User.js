@@ -21,11 +21,14 @@ function User() {
         <NavLink to="yourPosts" className={style.link}>
           Your Posts
         </NavLink>
+        <NavLink to="allPosts" className={style.link}>
+          All Posts
+        </NavLink>
         <NavLink to="recPosts" className={style.link}>
-          Rec Post
+          Rec Posts
         </NavLink>
         <NavLink to="topPosts" className={style.link}>
-          Top Post
+          Top Posts
         </NavLink>
         <NavLink to="morePosts" className={style.link}>
           More Posts
