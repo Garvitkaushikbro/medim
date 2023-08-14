@@ -5,6 +5,8 @@ import { useAuth } from "../contexts/AuthContext";
 import Search from "./Search";
 import Filter from "./Filter";
 import ListPosts from "./ListPosts";
+import SortViews from "./SortViews";
+import SortLikes from "./SortLikes";
 
 import style from "./Section.module.css";
 
@@ -52,6 +54,14 @@ function Section({ url, sectionId }) {
         {addOption && <Add setAddFormVisible={setAddFormVisible}></Add>}
         <Search yourPosts={Posts} setDisplayPosts={setDisplayPosts}></Search>
         <Filter setFilterFormVisible={setFilterFormVisible}></Filter>
+        <SortViews
+          displayPosts={displayPosts}
+          setDisplayPosts={setDisplayPosts}
+        ></SortViews>
+        <SortLikes
+          displayPosts={displayPosts}
+          setDisplayPosts={setDisplayPosts}
+        ></SortLikes>
       </div>
       {displayPosts.length > 0 ? (
         <ListPosts
