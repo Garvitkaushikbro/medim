@@ -55,7 +55,7 @@ function App() {
               path="recPosts"
               element={
                 <Section
-                  url={`http://127.0.0.1:3001/authorPosts/${userCredentials?._id}`}
+                  url={`http://127.0.0.1:3001/recPosts/${userCredentials?._id}`}
                   sectionId={2}
                 ></Section>
               }

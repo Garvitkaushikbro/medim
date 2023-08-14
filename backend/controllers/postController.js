@@ -83,6 +83,37 @@ module.exports.authorPosts_get = async (req, res) => {
   }
 };
 
+module.exports.recPosts_get = async (req, res) => {
+  const authorId = req.params.authorId;
+
+  try {
+    const authorDetails = await User.findById(authorId);
+    const allPostsId = await Promise.all(
+      authorDetails.following.map(async (followedAuthorId) => {
+        const { posts_written } = await User.findById(followedAuthorId);
+        return posts_written;
+      })
+    );
+    const flatAllPostsId = allPostsId.flat();
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!", flatAllPostsId);
+
+    const postPromises = flatAllPostsId.map(async (postId) => {
+      const post = await Post.findById(postId);
+      return post;
+    });
+
+    const posts = await Promise.all(postPromises);
+    const updatedPosts = posts.filter((p) => p !== null);
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", updatedPosts);
+    res.status(200).json(updatedPosts);
+  } catch (error) {
+    console.error("Error:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching recommended posts" });
+  }
+};
+
 module.exports.post_get = async (req, res) => {
   const postId = req.params.postId;
   console.log(postId);

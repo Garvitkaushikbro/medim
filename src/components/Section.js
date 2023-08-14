@@ -37,7 +37,7 @@ function Section({ url, sectionId }) {
       setPosts(posts);
     }
     fetchPosts();
-  }, []);
+  }, [url]);
 
   useEffect(
     function () {

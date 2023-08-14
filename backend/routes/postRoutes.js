@@ -9,17 +9,23 @@ const {
 const router = Router();
 
 router.post("/addPost", requireAuth, postController.addPost_post);
+
 router.get(
   "/authorPosts/:authorId",
   requireAuth,
   postController.authorPosts_get
 );
+
+router.get("/recPosts/:authorId", requireAuth, postController.recPosts_get);
+
 router.get("/post/:postId", requireAuth, postController.post_get);
+
 router.delete(
   "/deletePost/:postId",
   requireAuth,
   postController.deletePost_delete
 );
+
 router.put("/editPost/:postId", requireAuth, postController.editPost_put);
 
 router.put(
