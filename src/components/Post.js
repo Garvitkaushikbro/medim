@@ -12,6 +12,7 @@ function Post({ post, setYourPosts }) {
   const navigate = useNavigate();
   const { userCredentials, setUserCredentials } = useAuth();
   // text,
+  if (!post) return <></>;
   let {
     title,
     topic,
@@ -25,9 +26,26 @@ function Post({ post, setYourPosts }) {
     views,
   } = post;
 
-  function handlePostDelete() {
+  async function handlePostDelete() {
+    const URL = `http://127.0.0.1:3001/deletePost/${_id}`;
+    await fetch(URL, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    if (setYourPosts !== undefined) {
+      console.log("@@@@@@@@@@@@@@@@@@@@@@", _id);
+      setYourPosts((c) => {
+        return c.filter((elm) => {
+          console.log("dkfjslkjds;lf;df;sfd;slf;lk;dfsk;d", elm._id);
+          return elm._id !== _id;
+        });
+      });
+    }
     // axios
-    //   .delete(`http://127.0.0.1:3001/delete`, {
+    //   .delete(`http://127.0.0.1:3001/deletePost/${_id}`, {
     //     body: { id },
     //     headers: { Authorization: `Bearer ${userCredentials.auth_token}` },
     //   })

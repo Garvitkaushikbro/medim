@@ -1,6 +1,8 @@
+import { useAuth } from "../contexts/AuthContext";
 import style from "./AuthorDetails.module.css";
 
 function AuthorDetails({ name, email, image }) {
+  const { setUserCredentials, userCredentials } = useAuth();
   return (
     <div className={style.AuthorDetails}>
       <div className={style.userDetails}>
@@ -13,11 +15,11 @@ function AuthorDetails({ name, email, image }) {
         </div>
       </div>
 
-      <div className={style.userStats}>
-        <div className="userLikes">{`${40} likes`}</div>
-        <div className="userComments">{`${4} comments`}</div>
+      {/* <div className={style.userStats}>
+        <div className="userLikes">{`${userCredentials.likes.length} likes`}</div>
+        <div className="userComments">{`${userCredentials} comments`}</div>
         <div className="userViews">{`${100} views`}</div>
-      </div>
+      </div> */}
     </div>
   );
 }

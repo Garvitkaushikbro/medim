@@ -53,10 +53,14 @@ function Section({ url, sectionId }) {
         <Search yourPosts={Posts} setDisplayPosts={setDisplayPosts}></Search>
         <Filter setFilterFormVisible={setFilterFormVisible}></Filter>
       </div>
-      <ListPosts
-        displayPosts={displayPosts}
-        setYourPosts={setPosts}
-      ></ListPosts>
+      {displayPosts.length > 0 ? (
+        <ListPosts
+          displayPosts={displayPosts}
+          setYourPosts={setPosts}
+        ></ListPosts>
+      ) : (
+        <></>
+      )}
       {isFilterFormVisible && (
         <FilterForm
           setDisplayPosts={setDisplayPosts}

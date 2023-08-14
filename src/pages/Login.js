@@ -35,6 +35,7 @@ const Login = () => {
 
       if (response.status === 200) {
         const data = await response.json();
+        console.log("sfa;sdlf", data);
         setUserCredentials({ ...data });
         navigate("/user");
       }
