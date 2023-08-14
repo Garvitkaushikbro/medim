@@ -23,7 +23,10 @@ const postSchema = new mongoose.Schema({
     required: [true, "Please enter a author"],
   },
   likes: {
-    type: [String],
+    type: [mongoose.Schema.Types.ObjectId],
+  },
+  views: {
+    type: [mongoose.Schema.Types.ObjectId],
   },
   comments: [
     {

@@ -1,33 +1,29 @@
-  
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const admins = require('../admin');
-const Question = require('../models/question'); 
-const Experience = require('../models/experience');
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
 const requireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
 
   // check json web token exists & is verified
   if (token) {
-    jwt.verify(token, 'net ninja secret', (err, decodedToken) => {
+    jwt.verify(token, "net ninja secret", (err, decodedToken) => {
       if (err) {
         console.log(err.message);
-        res.redirect('/login');
+        res.redirect("/login");
       } else {
         console.log(decodedToken);
         next();
       }
     });
   } else {
-    res.redirect('/login');
+    res.redirect("/login");
   }
 };
 
 const checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
-    jwt.verify(token, 'net ninja secret', async (err, decodedToken) => {
+    jwt.verify(token, "net ninja secret", async (err, decodedToken) => {
       if (err) {
         res.locals.user = null;
         next();
@@ -43,94 +39,4 @@ const checkUser = (req, res, next) => {
   }
 };
 
- 
-
-//admin auth
-
-const adminAuth = (req, res, next) => {
-  console.log("kenny");
-  const token = req.cookies.jwt;
-  console.log(token)
-  //check json web token exists & is verified
-  if (token) {
-    jwt.verify(token, 'net ninja secret', (err, decodedToken) => {
-      if (err) {
-        console.log(err.message);
-        res.redirect('/login');
-      } else {
-        console.log(res.locals.user);
-        let swag = admins();
-      
-        var a = 0;
-        swag.forEach(element => {
-          console.log("hi");
-          console.log(element.email);
-             if(element.email == res.locals.user.email){
-               a=1;
-             }
-        });
-
-        if(a ==1){
-
-          req.body.approved = true;
-          console.log(req.body.approved);
-          next();
-        }
-       else{
-         res.redirect('/login');
-       }
-
-        
-      }
-    });
-  } else {
-    res.redirect('/login');
-    next();
-  }
-};
-
-const adminAuth1 = (req, res, next) => {
-  console.log("kenny1");
-  const token = req.cookies.jwt;
-  console.log(token)
-  //check json web token exists & is verified
-  if (token) {
-    jwt.verify(token, 'net ninja secret', (err, decodedToken) => {
-      if (err) {
-        console.log(err.message);
-        res.redirect('/login');
-      } else {
-        console.log(res.locals.user);
-        let swag = admins();
-      
-        var a = 0;
-        swag.forEach(element => {
-          console.log("hi");
-          console.log(element.email);
-             if(element.email == res.locals.user.email){
-               a=1;
-             }
-        });
-
-        if(a ==1){
-
-          req.body.approved = true;
-          console.log(req.body.approved);
-          next();
-        }
-       else{
-         res.redirect('/login');
-       }
-
-        
-      }
-    });
-  } else {
-    res.redirect('/login');
-    next();
-  }
-};
-
-
-
-module.exports = { requireAuth, checkUser ,adminAuth, adminAuth1 };
+module.exports = { requireAuth, checkUser };

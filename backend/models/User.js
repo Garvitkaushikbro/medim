@@ -31,6 +31,9 @@ const userSchema = new mongoose.Schema({
   posts_written: {
     type: [mongoose.Schema.Types.ObjectId],
   },
+  today_views: {
+    type: [mongoose.Schema.Types.ObjectId],
+  },
 });
 
 // fire a function before doc saved to db
