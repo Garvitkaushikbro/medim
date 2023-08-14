@@ -34,7 +34,6 @@ function Section({ url, sectionId }) {
         credentials: "include",
       });
       const posts = await response.json();
-      console.log("dflkjdslfjdsppapppppppp", posts);
       setPosts(posts);
     }
     fetchPosts();

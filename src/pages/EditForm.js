@@ -7,7 +7,7 @@ function EditForm({ postId, setEditFormVisible, setYourPosts }) {
   const [topic, setTopic] = useState("");
   const [image, setImage] = useState("");
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     setEditFormVisible(false);
     // Make post request for saving data
@@ -19,7 +19,7 @@ function EditForm({ postId, setEditFormVisible, setYourPosts }) {
       text,
     };
 
-    fetch(url, {
+    await fetch(url, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

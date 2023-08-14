@@ -25,7 +25,6 @@ function Post({ post, setYourPosts }) {
     comments,
     views,
   } = post;
-
   async function handlePostDelete() {
     const URL = `http://127.0.0.1:3001/deletePost/${_id}`;
     await fetch(URL, {
@@ -36,10 +35,8 @@ function Post({ post, setYourPosts }) {
       credentials: "include",
     });
     if (setYourPosts !== undefined) {
-      console.log("@@@@@@@@@@@@@@@@@@@@@@", _id);
       setYourPosts((c) => {
         return c.filter((elm) => {
-          console.log("dkfjslkjds;lf;df;sfd;slf;lk;dfsk;d", elm._id);
           return elm._id !== _id;
         });
       });
@@ -78,7 +75,7 @@ function Post({ post, setYourPosts }) {
           <div className={style.postTitle}>{title}</div>
           <div className={style.postPublishTime}>{publishDate}</div>
           <div className={style.postAuthor}>
-            <Link to={`/author/${authorId}`}>Author | {author}</Link>
+            <Link to={`/authorProfile/${authorId}`}>Author | {author}</Link>
           </div>
           <div className={style.readPost}>
             <Link to={`/post/${_id}`}>Read Post</Link>

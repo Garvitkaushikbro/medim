@@ -1,11 +1,48 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
-const jwt = require("jsonwebtoken");
 // const Question = require('../models/question');
 // const Topic = require('../models/topic');
 // const Company = require("../models/company");
 // const Experience = require("../models/experience");
 // handle errors
+
+module.exports.toggleFollowStatus_put = async (req, res) => {
+  const authorId = req.params.authorId;
+  const { authorId: client } = req.body;
+
+  const updatedUser = await User.findById(authorId);
+  if (updatedUser.following.includes(client)) {
+    // Remove client from the following array
+    updatedUser.following.pull(client);
+  } else {
+    // Add client to the following array
+    updatedUser.following.push(client);
+  }
+  await User.findByIdAndUpdate(
+    authorId,
+    updatedUser,
+    { new: true },
+    (error, updatedUser) => {
+      if (error) {
+        console.error("Error:", error);
+      } else {
+        console.log("Updated User:", updatedUser);
+      }
+    }
+  );
+  res.send("Success");
+};
+
+module.exports.authorDetails_get = async (req, res) => {
+  const authorId = req.params.authorId;
+  const authorDetails = await User.findById(authorId);
+  res.status(200).json({
+    email: authorDetails.email,
+    name: authorDetails.name,
+    _id: authorDetails._id,
+    posts_written: authorDetails.posts_written,
+  });
+};
 
 const handleErrors = (err) => {
   console.log(err.message, err.code);
@@ -42,7 +79,6 @@ const handleErrors = (err) => {
 
 module.exports.addPost_post = async (req, res) => {
   const newPost = req.body;
-
   try {
     const ret_newPost = await Post.create(newPost);
     const authorId = newPost.authorId;
@@ -68,6 +104,7 @@ module.exports.addPost_post = async (req, res) => {
 
 module.exports.authorPosts_get = async (req, res) => {
   const authorId = req.params.authorId;
+  console.log(authorId);
   try {
     const [authorDetails] = await User.find({ _id: authorId });
     const postPromises = authorDetails.posts_written?.map(async (postId) => {
@@ -114,6 +151,7 @@ module.exports.deletePost_delete = async (req, res) => {
 
 module.exports.editPost_put = async (req, res) => {
   const postId = req.params.postId;
+
   const existingPost = await Post.findById(postId);
   if (!existingPost) {
     return res.status(404).json({ message: "Post not found" });

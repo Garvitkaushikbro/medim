@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import User from "./pages/User";
-import CheckoutProfile from "./pages/CheckoutProfile";
+import AuthorProfile from "./pages/AuthorProfile";
 import FullPost from "./pages/FullPost";
 import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
@@ -89,10 +89,10 @@ function App() {
             ></Route>
           </Route>
           <Route
-            path="/checkout/:id"
+            path="/authorProfile/:authorId"
             element={
               <Protected userCredentials={userCredentials}>
-                <CheckoutProfile></CheckoutProfile>
+                <AuthorProfile></AuthorProfile>
               </Protected>
             }
           ></Route>

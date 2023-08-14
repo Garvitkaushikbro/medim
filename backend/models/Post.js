@@ -39,6 +39,10 @@ const postSchema = new mongoose.Schema({
     type: [String],
     required: [true, "Please enter a password"],
   },
+  authorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: [true, "Please enter a password"],
+  },
 });
 
 const Post = mongoose.model("post", postSchema);

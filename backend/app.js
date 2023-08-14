@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
+const authorRoutes = require("./routes/authorRoutes");
 const cookieParser = require("cookie-parser");
 
 // const { requireAuth, checkUser } = require("./middleware/authMiddleware");
@@ -48,6 +49,7 @@ mongoose
 // routes
 app.use(authRoutes);
 app.use(postRoutes);
+app.use(authorRoutes);
 
 // var data;
 // var getdocument = async () => {
