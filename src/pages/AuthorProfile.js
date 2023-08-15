@@ -13,6 +13,8 @@ function AuthorProfile() {
 
   const isFollowing = userCredentials.following.includes(authorId);
   const [isFollowed, setIsFollowed] = useState(isFollowing);
+  const [authorPosts, setAuthorPosts] = useState([]);
+  const [authorDetails, setAuthorDetails] = useState("");
 
   // get details of author from server
   useEffect(() => {
@@ -38,12 +40,22 @@ function AuthorProfile() {
       });
       const posts = await res.json();
       setAuthorPosts(posts);
+      // const resp = await fetch(
+      //   `http://127.0.0.1:3001/authorDetails/${userCredentials._id}`,
+      //   {
+      //     method: "GET",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     credentials: "include",
+      //   }
+      // );
+      // const { following } = await resp.json();
+      // const isFollowing = userCredentials.following.includes(authorId);
+      // setIsFollowed(isFollowing);
     }
     fetchAuthorDetails();
   }, []);
-
-  const [authorPosts, setAuthorPosts] = useState([]);
-  const [authorDetails, setAuthorDetails] = useState("");
 
   async function handleFollow() {
     await fetch(
@@ -58,31 +70,19 @@ function AuthorProfile() {
       }
     );
     setIsFollowed(!isFollowed);
+    setUserCredentials((c) => {
+      const arr = c.following.slice(); // Create a copy of the array
+      const index = arr.indexOf(authorId);
+
+      if (index !== -1) {
+        arr.splice(index, 1); // Remove the authorId from the array
+      } else {
+        arr.push(authorId); // Add the authorId to the array
+      }
+
+      return { ...c, following: arr };
+    });
   }
-
-  // // get posts of author from server
-  // useEffect(() => {
-  //   // async function fetchAuthorDetails() {
-  //   //   const
-  //   // }
-  // }, []);
-
-  // useEffect(() => {
-  //   async function fetchPosts() {
-  //     // Make post request for saving data
-  //     const { data: res1 } = await axios.get(
-  //       "http://127.0.0.1:3001/searchbyauthor",
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${userCredentials.auth_token}`, // Include the token as a Bearer token in the header
-  //           authorname: `b`,
-  //         },
-  //       }
-  //     );
-  //     setUserPosts([...res1]);
-  //   }
-  //   fetchPosts();
-  // }, [userCredentials.auth_token, setUserPosts]);
 
   return (
     <div className={style.checkOutProfile}>

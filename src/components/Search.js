@@ -11,7 +11,8 @@ function Search({ setDisplayPosts, yourPosts }) {
         yourPosts.filter((elm) => {
           return (
             elm.title.toLowerCase().includes(keyword.toLowerCase()) ||
-            elm.topic.toLowerCase().includes(keyword.toLowerCase())
+            elm.topic.toLowerCase().includes(keyword.toLowerCase()) ||
+            elm.author.toLowerCase().includes(keyword.toLowerCase())
           );
         })
       );
