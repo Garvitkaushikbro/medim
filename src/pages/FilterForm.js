@@ -1,6 +1,11 @@
 import { useState } from "react";
 import style from "./FilterForm.module.css";
 
+function parseDate(dateString) {
+  const [day, month, year] = dateString.split("/");
+  return new Date(`${year}-${month}-${day}`);
+}
+
 function FilterForm({ yourPosts, setDisplayPosts, setFilterFormVisible }) {
   const [date, setDate] = useState("");
 
@@ -11,7 +16,7 @@ function FilterForm({ yourPosts, setDisplayPosts, setFilterFormVisible }) {
     setDisplayPosts(yourPosts);
     setDisplayPosts((c) => {
       return c.filter((elm) => {
-        let date1 = new Date(elm.publishTime);
+        let date1 = new Date(parseDate(elm.publishDate));
         let date2 = new Date(date);
         console.log(date1, date2);
         return (

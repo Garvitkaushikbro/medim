@@ -40,8 +40,18 @@ const handleErrors = (err) => {
   return errors;
 };
 
+function formatDate(date) {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
 module.exports.addPost_post = async (req, res) => {
   const newPost = req.body;
+  const today = new Date();
+  const formattedDate = formatDate(today);
+  newPost.publishDate = formattedDate;
 
   try {
     const ret_newPost = await Post.create(newPost);

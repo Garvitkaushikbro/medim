@@ -10,6 +10,9 @@ const postSchema = new mongoose.Schema({
     required: [true, "Please enter an topic"],
     lowercase: true,
   },
+  publishDate: {
+    type: String,
+  },
   image: {
     type: String,
     required: [true, "Please enter a image"],
