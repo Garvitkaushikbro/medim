@@ -25,8 +25,6 @@ const handleErrors = (err) => {
   if (err.message.includes("user validation failed")) {
     // console.log(err);
     Object.values(err.errors).forEach(({ properties }) => {
-      // console.log(val);
-      // console.log(properties);
       errors[properties.path] = properties.message;
     });
   }
@@ -75,7 +73,6 @@ module.exports.login_post = async (req, res) => {
   try {
     const user = await User.login(email, password);
     const token = createToken(user._id);
-    console.log("kfldksf", token, user._id);
     res.cookie("jwt", token, {
       maxAge: maxAge * 1000,
       secure: true,
@@ -109,75 +106,3 @@ module.exports.logout_get = (req, res) => {
   });
   res.status(200).json("");
 };
-
-// controller actions
-// module.exports.signup_get = (req, res) => {
-//   res.render('signup');
-// }
-
-// module.exports.login_get = (req, res) => {
-//   res.render('login');
-// }
-
-// module.exports.question_get = (req, res) => {
-//   res.render('addquestion');
-// }
-
-// module.exports.question_post = async(req,res) => {
-
-//   console.log("alia");
-//   var x = await Topic.find({ topic : req.body.topic });
-//   var id = x[0]._id;
-//   req.body.topic = id;
-//   console.log(req.body);
-
-//   var data = new Question(req.body);
-//  data.save()
-//   .then(item => {
-//     console.log("data is saved");
-//   })
-//  .catch(err => {
-//     console.log(err);
-//   })
-
-// }
-
-// module.exports.addexperience_get = (req,res) =>{
-//   res.render('addexperience');
-// }
-
-// module.exports.topic_get = (req, res) => {
-//   Topic.find({},(err,data)=> {
-//     if(err){
-//       console.log(err)
-//     }else{
-
-//       res.render('practise',{ topic : data});
-//     }
-//   }
-//   )};
-
-//   module.exports.addexperience_get = (req,res) =>{
-
-//     res.render('addexperience');
-//   }
-
-//   module.exports.addexperience_post = async(req,res) => {
-
-//    var phew = req.body.company;
-
-//    console.log(req.body);
-//     var x = await Company.find({ name : req.body.company });
-//     console.log(x);
-//      var id = x[0]._id;
-//      req.body.company = id;
-
-//   var data = new Experience(req.body);
-//    data.save()
-//     .then(item => {
-//       console.log("data is saved");
-//     })
-//    .catch(err => {
-//       console.log(err);
-//     })
-//   }

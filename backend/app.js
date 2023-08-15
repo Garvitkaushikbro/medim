@@ -3,7 +3,11 @@ const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
 const authorRoutes = require("./routes/authorRoutes");
+const { checkUser } = require("./middleware/authMiddleware");
 const cookieParser = require("cookie-parser");
+
+const User = require("./models/User");
+const Post = require("./models/Post");
 
 // const { requireAuth, checkUser } = require("./middleware/authMiddleware");
 
@@ -44,38 +48,74 @@ const stripe = require("stripe")(
   "sk_test_51Nf5G5SEwkmLhDCHmcMD4gsfg9FxPyCCmOhieI9tLGM8cTkFQlYhBFd0uiJAPXzRQ18LO00vS6L2tsYXNHykU95l00L6wyYmlO"
 );
 
-const storeItems = new Map([
-  [1, { priceInCents: 300, name: "Premium" }],
-  [2, { priceInCents: 500, name: "Super Premium" }],
-  [3, { priceInCents: 1000, name: "Super Super Premium" }],
-]);
+// app.post("*", checkUser);
 
-app.post("/create-checkout-session", async (req, res) => {
+app.post("/payment", cors(), async (req, res) => {
+  let { amount, id, authorId } = req.body;
+
   try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "payment",
-      line_items: req.body.items.map((item) => {
-        const storeItem = storeItems.get(item.id);
-        return {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: storeItem.name,
-            },
-            unit_amount: storeItem.priceInCents,
-          },
-          quantity: item.quantity,
-        };
-      }),
-      success_url: `http://localhost:3000/premiumUser`,
-      cancel_url: `http://localhost:3000/subscriptionPlans`,
+    const payment = await stripe.paymentIntents.create({
+      amount,
+      currency: "USD",
+      description: "Payment",
+      payment_method: id,
+      confirm: true,
     });
-    res.json({ url: session.url });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
+    console.log("dflsfjsdfdsfds", authorId);
+    const existingUser = await User.findById(authorId);
+
+    // Update properties if they are provided in the payload
+    existingUser.maxViews += amount / 1000;
+
+    // Save the updated post
+    const updatedPost = await existingUser.save();
+
+    console.log("Payment", payment);
+    res.json({
+      message: "Payment was successful",
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error", error);
+    res.json({
+      message: "Payment Failed",
+      success: false,
+    });
   }
 });
+
+// const storeItems = new Map([
+//   [1, { priceInCents: 300, name: "Premium" }],
+//   [2, { priceInCents: 500, name: "Super Premium" }],
+//   [3, { priceInCents: 1000, name: "Super Super Premium" }],
+// ]);
+
+// app.post("/create-checkout-session", async (req, res) => {
+//   try {
+//     const session = await stripe.checkout.sessions.create({
+//       payment_method_types: ["card"],
+//       mode: "payment",
+//       line_items: req.body.items.map((item) => {
+//         const storeItem = storeItems.get(item.id);
+//         return {
+//           price_data: {
+//             currency: "usd",
+//             product_data: {
+//               name: storeItem.name,
+//             },
+//             unit_amount: storeItem.priceInCents,
+//           },
+//           quantity: item.quantity,
+//         };
+//       }),
+//       success_url: `http://localhost:3000/premiumUser`,
+//       cancel_url: `http://localhost:3000/subscriptionPlans`,
+//     });
+//     res.json({ url: session.url });
+//   } catch (e) {
+//     res.status(500).json({ error: e.message });
+//   }
+// });
 
 // routes
 app.use(authRoutes);

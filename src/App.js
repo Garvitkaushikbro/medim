@@ -15,6 +15,8 @@ import TopicList from "./components/TopicList";
 import SavePost from "./components/SavePost";
 import { useState } from "react";
 
+import Stripe from "./pages/Stripe";
+
 function App() {
   const { userCredentials } = useAuth();
 
@@ -28,7 +30,6 @@ function App() {
   function SubscriptionCheck({ userCredentials, children }) {
     console.log(userCredentials.maxViews, userCredentials.today_views.length);
     if (userCredentials.maxViews < userCredentials.today_views.length) {
-      console.log("HIhihihihihiihihi");
       return <Navigate to="/subscriptionPlans" replace />;
     }
     return children;

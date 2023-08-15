@@ -22,6 +22,7 @@ const requireAuth = (req, res, next) => {
 
 const checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
+  console.log("reached check USer", token);
   if (token) {
     jwt.verify(token, "net ninja secret", async (err, decodedToken) => {
       if (err) {
