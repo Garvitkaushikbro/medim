@@ -237,17 +237,10 @@ module.exports.toggleLikeStatus_put = async (req, res) => {
 
 module.exports.addComment_put = async (req, res) => {
   const postId = req.params.postId;
-  console.log(postId);
   const comment = req.body;
-  console.log(comment);
 
   try {
     const updatedPost = await Post.findById(postId);
-
-    if (!updatedPost) {
-      return res.status(404).json({ message: "Post not found" });
-    }
-
     const newComment = {
       text: comment.text,
       commentAuthorId: comment.commentAuthorId,

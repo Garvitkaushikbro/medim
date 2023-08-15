@@ -60,7 +60,7 @@ function FullPost() {
       },
       body: JSON.stringify({
         text: currentComment,
-        commentAuthorId: userCredentials._id,
+        commentAuthorId: userCredentials.email,
       }),
       credentials: "include",
     });
@@ -68,7 +68,7 @@ function FullPost() {
       ...prevPost,
       comments: [
         ...prevPost.comments,
-        { text: currentComment, commentAuthorId: userCredentials._id },
+        { text: currentComment, commentAuthorId: userCredentials.email },
       ],
     }));
     setCurrentComment("");
